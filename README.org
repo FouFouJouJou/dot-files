@@ -1,0 +1,20 @@
+#+TITLE: My dot files repository
+#+OPTIONS: \n:t
+*** Prerequisites
+Make sure to install [[https://command-not-found.com/stow][GNU Stow]]
+*** Applying configuration
+In order to apply *all* the configurations:
+#+BEGIN_SRC bash
+  stow . 
+#+END_SRC
+
+In order to apply only a select number of configurations. For example only alacritty:
+#+BEGIN_SRC bash
+  stow alacritty
+#+END_SRC
+
+Or alacritty, neovim and ranger:
+#+BEGIN_SRC bash
+  stow alacritty neovim ranger
+#+END_SRC
+
