@@ -1,20 +1,22 @@
 #+TITLE: My dot files repository
 #+OPTIONS: \n:t
+*** Notes
+This setup was not tested with anything other than linux
 *** Prerequisites
 Make sure to install [[https://command-not-found.com/stow][GNU Stow]]
 *** Applying configuration
 In order to apply *all* the configurations:
 #+BEGIN_SRC bash
-  stow . 
+  stow --target=$HOME .
 #+END_SRC
 
 In order to apply only a select number of configurations. For example only alacritty:
 #+BEGIN_SRC bash
-  stow alacritty
+  stow --target=$HOME alacritty
 #+END_SRC
 
 Or alacritty, neovim and ranger:
 #+BEGIN_SRC bash
-  stow alacritty neovim ranger
+  stow --target=$HOME alacritty neovim ranger 
 #+END_SRC
 
