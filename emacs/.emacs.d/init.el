@@ -49,5 +49,8 @@
   :config
   (global-company-mode 1))
 
-(use-package eros);
+(use-package eros
+  :init
+  (eros-mode 1))
+
 (use-package lsp-mode)
