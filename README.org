@@ -17,6 +17,6 @@ In order to apply only a select number of configurations. For example only alacr
 
 Or alacritty, neovim and ranger:
 #+BEGIN_SRC bash
-  stow --target=$HOME alacritty neovim ranger 
+  stow --target=$HOME alacritty nvim ranger 
 #+END_SRC
-
+Each command line argument corresponds to the name of the directory associated with its respective piece of software.
