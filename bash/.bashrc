@@ -4,5 +4,5 @@
 [[ $- != *i* ]] && return
 
 alias ls='ls -F --color=auto'
-alias ssh-init='eval $(ssh-agent -s); ssh-add ~/.ssh/github_firasjaballiftw_void;'
+alias grep='grep --color'
 PS1='\u@\h:\w % '
