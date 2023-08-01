@@ -37,19 +37,20 @@ apply() {
       [[ $NEXT_LIMIT -ge 100 ]] \
       && pactl set-sink-volume @DEFAULT_SINK@ "100%" \
       || pactl set-sink-volume @DEFAULT_SINK@ "+$INCREMENT%"
+      exit 0
       ;;
     "-")
       echo "reducing volume by $INCREMENT"
       pactl set-sink-volume @DEFAULT_SINK@ "-$INCREMENT%"
+      exit 0
       ;;
     "x")
       echo "toggling mute"
       pactl set-sink-mute 0 toggle
+      exit 0
       ;;
   esac;
 
 }
 
 apply $OPERATION $INCREMENT
-
-
