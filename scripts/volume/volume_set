@@ -52,6 +52,4 @@ apply() {
 
 apply $OPERATION $INCREMENT
 
-# get muted status:
-#   pacmd list-sinks | awk '/muted/ { print $2 }'
 
