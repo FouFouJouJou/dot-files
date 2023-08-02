@@ -9,5 +9,5 @@ get_muted_status() {
 }
 VOLUME=$(get_current_volume)
 [[ $(get_muted_status) == "yes" ]] && dunstify "volume: Muted" && exit 0
-dunstify "volume: $VOLUME" -a "volume_level" -h string:x-dunst-stack-tag:$MSG_TAG -h int:value:$VOLUME
+dunstify "volume: $VOLUME%" -a "volume_level" -h string:x-dunst-stack-tag:$MSG_TAG
 
