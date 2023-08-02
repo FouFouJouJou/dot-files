@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 
 MIN_LIMIT=20
-CRITICAL_MIN_LIMIT=50
-
+CRITICAL_MIN_LIMIT=10
 MAX_LIMIT=80
 CRITICAL_MAX_LIMIT=90
+
 CHARGING_STATUS="Charging"
 DISCHARGING_STATUS="Discharging"
+
 NOTIF_TAG="battery"
 APP_NAME="battery"
 NOTIF_TITLE=""
@@ -37,9 +38,6 @@ elif [[ "$STATUS" == "$CHARGING_STATUS" ]]; then
   fi
 fi
 
-if [[ "$NOTIF_LEVEL" == "" ]]; then
-  echo "Everything is normal"
-  echo $CHARGE $STATUS
-else
+if [[ "$NOTIF_LEVEL" != "" ]]; then
   notify $CHARGE $NOTIF_LEVEL
 fi
