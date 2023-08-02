@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-VOLUME_DISPLAY_SCRIPT=~/documents/dot-files/scripts/volume/volume_display
-VOLUME_SET_SCRIPT=~/documents/dot-files/scripts/volume/volume_set
+VOLUME_DISPLAY_SCRIPT=~/documents/dot-files/scripts/volume/display
+VOLUME_SET_SCRIPT=~/documents/dot-files/scripts/volume/set
 OPERATION=$1
 INCREMENT=$2
 $VOLUME_SET_SCRIPT $OPERATION $INCREMENT && $VOLUME_DISPLAY_SCRIPT
