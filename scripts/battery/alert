@@ -1,20 +1,26 @@
 #!/usr/bin/env bash
 
 MIN_LIMIT=20
-CRITICAL_MIN_LIMIT=10
+CRITICAL_MIN_LIMIT=50
 
 MAX_LIMIT=80
 CRITICAL_MAX_LIMIT=90
 CHARGING_STATUS="Charging"
 DISCHARGING_STATUS="Discharging"
-NOTIF_TAG="charge"
+NOTIF_TAG="battery"
+APP_NAME="battery"
 NOTIF_TITLE=""
 NOTIF_CONTENT=""
 CHARGE=$(cat /sys/class/power_supply/BAT1/capacity)
 STATUS=$(cat /sys/class/power_supply/BAT1/status)
 
 notify() {
-  dunstify "Charge: $1" "$2"
+  BATTERY_LEVEL=$1
+  URGENCY=$2
+  dunstify "Battery level: $BATTERY_LEVEL%" \
+  -a $APP_NAME \
+  -h string:x-dunst-stack-tag:$NOTIF_TAG \
+  --urgency=$URGENCY
 }
 
 if [[ "$STATUS" == "$DISCHARGING_STATUS" ]]; then
