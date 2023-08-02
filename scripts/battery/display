@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 CHARGE=$(cat /sys/class/power_supply/BAT1/capacity)
+STATUS=$(cat /sys/class/power_supply/BAT1/status)
 MSG_TAG="battery"
-dunstify "battery: $CHARGE%" -a "battery_level" -h string:x-dunst-stack-tag:$MSG_TAG -h int:value:$(($CHARGE))
+dunstify "battery level: $CHARGE%" "$STATUS" -a "battery_level" -h string:x-dunst-stack-tag:$MSG_TAG
