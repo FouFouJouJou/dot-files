@@ -31,7 +31,7 @@ apply() {
   CURRENT_VOLUME=$(get_current_volume)
   case $OPERATION in
     "+")
-      echo "[$(date)]: increasing volume by $INCREMENT" >> logs
+      echo "[$(date)]: increasing volume by $INCREMENT" >> ~/documents/dot-files/scripts/volume/logs
       NEXT_LIMIT=$(($CURRENT_VOLUME + $INCREMENT))
       [[ $(get_current_volume) == 100 ]] && exit 0;
       [[ $NEXT_LIMIT -ge 100 ]] \
