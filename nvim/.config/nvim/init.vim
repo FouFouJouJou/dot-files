@@ -1,7 +1,8 @@
-inoremap jk <ESC>
-set tabstop=2
-set expandtab
-set shiftwidth=2
+set autoindent expandtab tabstop=2 shiftwidth=2
+syntax on
 set autoindent
-set smartindent
-set cindent
+set expandtab
+set tabstop=2
+set shiftwidth=2
+set wildmenu
+inoremap jk <Esc>
