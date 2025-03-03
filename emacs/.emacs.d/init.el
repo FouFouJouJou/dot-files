@@ -1,7 +1,8 @@
 (scroll-bar-mode -1)
 (menu-bar-mode -1)
 (tool-bar-mode -1)
-(load-theme 'whiteboard)
+(set-frame-font "Iosvmata 11" nil t)
+(global-font-lock-mode 1)
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
   backup-by-copying t
   version-control t
@@ -23,6 +24,14 @@
 (eval-when-compile (require 'use-package))
 (setq use-package-always-ensure t)
 
+(use-package almost-mono-themes
+  :config
+  ;; (load-theme 'almost-mono-black t)
+  ;; (load-theme 'almost-mono-gray t)
+  ;; (load-theme 'almost-mono-cream t)
+  (load-theme 'almost-mono-white t)
+  )
+
 (use-package evil
   :init
   (setq evil-want-integration t)
@@ -32,19 +41,19 @@
 
 (use-package evil-collection
   :after evil
-  :custom (evil-collection-setup-minibuffer t)
+  :custom
+  (evil-collection-setup-minibuffer t)
+  :init
+  (evil-define-key 'normal dired-mode-map "h" 'dired-up-directory)
+  (evil-define-key 'normal dired-mode-map "t" 'dired-create-empty-file)
+  (evil-define-key 'normal dired-mode-map "d" 'dired-do-delete)
+  (evil-define-key 'normal dired-mode-map (kbd "<RET>") 'dired-view-file)
+  (evil-define-key 'normal dired-mode-map "l" 'dired-find-alternate-file)
+  (evil-define-key 'normal dired-mode-map "R" 'dired-do-rename)
+  (evil-define-key 'normal dired-mode-map "r" 'dired-do-redisplay)
+  (evil-define-key 'normal dired-mode-map "q" 'kill-this-buffer)
   :config
   (evil-collection-init t))
-
-(use-package eros
-  :config
-  (eros-mode 1))
-
-(use-package emacs
-  :custom
-  (tab-always-indent 'complete)
-  (text-mode-ispell-word-completion nil)
-  (read-extended-command-predicate #'command-completion-default-include-p))
 
 (use-package key-chord
   :init
@@ -53,36 +62,34 @@
   :config
   (key-chord-mode 1))
 
-(use-package marginalia
+(use-package eros
   :config
-  (marginalia-mode 0))
+  (eros-mode 1))
 
+;;(use-package emacs
+;;  :custom
+;;  (tab-always-indent 'complete)
+;;  (text-mode-ispell-word-completion nil)
+;;  (read-extended-command-predicate #'command-completion-default-include-p))
 
-(use-package fuzzy)
-(use-package auto-complete
-  :after fuzzy
-  :config
-  (ac-flyspell-workaround)
-  (setq ac-use-fuzzy 1)
-  :init
-  (ac-config-default)
-  (add-to-list 'ac-sources 'ac-source-yasnippet)
-  (global-auto-complete-mode t))
-
-(use-package orderless
-  :custom
-  (completion-styles '(orderless basic))
-  (completion-category-defaults nil)
-  (completion-category-overrides '((file (styles partial-completion)))))
-
-(use-package lsp-mode)
-(use-package lsp-ui
-  :after lsp-mode
-  :config
-  (setq lsp-ui-doc-enable t)
-  (setq lsp-ui-sideline-enable t)
-  (setq lsp-ui-doc-position 'at-point)
-  (setq lsp-ui-sideline-show-hover nil)
-  (setq lsp-ui-sideline-show-diagnostics t)
-  (setq lsp-ui-sideline-delay 0.1)
-  (setq lsp-ui-doc-show-with-cursor nil))
+;;(use-package marginalia
+;;  :config
+;;  (marginalia-mode 0))
+;;
+;;
+;;(use-package fuzzy)
+;;(use-package auto-complete
+;;  :after fuzzy
+;;  :config
+;;  (ac-flyspell-workaround)
+;;  (setq ac-use-fuzzy 1)
+;;  :init
+;;  (ac-config-default)
+;;  (add-to-list 'ac-sources 'ac-source-yasnippet)
+;;  (global-auto-complete-mode t))
+;;
+;;(use-package orderless
+;;  :custom
+;;  (completion-styles '(orderless basic))
+;;  (completion-category-defaults nil)
+;;  (completion-category-overrides '((file (styles partial-completion)))))
