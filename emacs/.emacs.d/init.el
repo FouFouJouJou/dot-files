@@ -26,11 +26,10 @@
 
 (use-package almost-mono-themes
   :config
-  ;; (load-theme 'almost-mono-black t)
-  ;; (load-theme 'almost-mono-gray t)
-  ;; (load-theme 'almost-mono-cream t)
-  (load-theme 'almost-mono-white t)
-  )
+  ;;(load-theme 'almost-mono-black t)
+  ;;(load-theme 'almost-mono-gray t)
+  ;;(load-theme 'almost-mono-cream t)
+  (load-theme 'almost-mono-white t))
 
 (use-package evil
   :init
@@ -65,6 +64,8 @@
 (use-package eros
   :config
   (eros-mode 1))
+
+;;(use-package magit)
 
 ;;(use-package emacs
 ;;  :custom
