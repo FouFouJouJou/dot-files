@@ -12,11 +12,11 @@ In order to apply *all* the configurations:
 
 In order to apply only a select number of configurations. For example only alacritty:
 #+BEGIN_SRC bash
-  stow --target=$HOME alacritty
+  stow --target=$HOME --dotfiles alacritty
 #+END_SRC
 
 Or alacritty, neovim and emacs:
 #+BEGIN_SRC bash
-  stow --target=$HOME alacritty nvim emacs 
+  stow --target=$HOME --dotfiles alacritty nvim emacs 
 #+END_SRC
 Each command line argument corresponds to the name of the directory associated with its respective piece of software.
