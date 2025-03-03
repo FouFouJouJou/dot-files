@@ -1,7 +1,8 @@
 (scroll-bar-mode -1)
 (menu-bar-mode -1)
 (tool-bar-mode -1)
-(set-frame-font "Iosvmata 11" nil t)
+(set-frame-font "Iosevka Term 11" nil t)
+;; (set-frame-font "Iosvmata 11" nil t)
 (global-font-lock-mode 1)
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
   backup-by-copying t
@@ -20,7 +21,6 @@
 (package-initialize)
 (unless package-archive-contents
   (package-refresh-contents))
-(package-install-selected-packages)
 (eval-when-compile (require 'use-package))
 (setq use-package-always-ensure t)
 
@@ -65,7 +65,7 @@
   :config
   (eros-mode 1))
 
-;;(use-package magit)
+(use-package magit)
 
 ;;(use-package emacs
 ;;  :custom
