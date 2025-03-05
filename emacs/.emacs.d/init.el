@@ -4,7 +4,7 @@
 (set-frame-font "Iosevka Term 11" nil t)
 (setf dired-kill-when-opening-new-dired-buffer t)
 (put 'dired-find-alternate-file 'disabled nil)
-;; (set-frame-font "Iosvmata 11" nil t)
+
 (global-font-lock-mode 1)
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
   backup-by-copying t
