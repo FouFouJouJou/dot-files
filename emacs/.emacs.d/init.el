@@ -2,6 +2,8 @@
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (set-frame-font "Iosevka Term 11" nil t)
+(setf dired-kill-when-opening-new-dired-buffer t)
+(put 'dired-find-alternate-file 'disabled nil)
 ;; (set-frame-font "Iosvmata 11" nil t)
 (global-font-lock-mode 1)
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
@@ -40,17 +42,17 @@
 
 (use-package evil-collection
   :after evil
-  :custom
-  (evil-collection-setup-minibuffer t)
   :init
-  (evil-define-key 'normal dired-mode-map "h" 'dired-up-directory)
+  (evil-define-key 'normal dired-mode-map "b" 'dired-up-directory)
   (evil-define-key 'normal dired-mode-map "t" 'dired-create-empty-file)
   (evil-define-key 'normal dired-mode-map "d" 'dired-do-delete)
-  (evil-define-key 'normal dired-mode-map (kbd "<RET>") 'dired-view-file)
+  (evil-define-key 'normal dired-mode-map (kbd "<RET>") 'dired-find-alternate-file)
   (evil-define-key 'normal dired-mode-map "l" 'dired-find-alternate-file)
   (evil-define-key 'normal dired-mode-map "R" 'dired-do-rename)
   (evil-define-key 'normal dired-mode-map "r" 'dired-do-redisplay)
-  (evil-define-key 'normal dired-mode-map "q" 'kill-this-buffer)
+  (evil-define-key 'normal dired-mode-map "q" 'kill-current-buffer)
+  :custom
+  (evil-collection-setup-minibuffer t)
   :config
   (evil-collection-init t))
 
@@ -66,31 +68,3 @@
   (eros-mode 1))
 
 (use-package magit)
-
-;;(use-package emacs
-;;  :custom
-;;  (tab-always-indent 'complete)
-;;  (text-mode-ispell-word-completion nil)
-;;  (read-extended-command-predicate #'command-completion-default-include-p))
-
-;;(use-package marginalia
-;;  :config
-;;  (marginalia-mode 0))
-;;
-;;
-;;(use-package fuzzy)
-;;(use-package auto-complete
-;;  :after fuzzy
-;;  :config
-;;  (ac-flyspell-workaround)
-;;  (setq ac-use-fuzzy 1)
-;;  :init
-;;  (ac-config-default)
-;;  (add-to-list 'ac-sources 'ac-source-yasnippet)
-;;  (global-auto-complete-mode t))
-;;
-;;(use-package orderless
-;;  :custom
-;;  (completion-styles '(orderless basic))
-;;  (completion-category-defaults nil)
-;;  (completion-category-overrides '((file (styles partial-completion)))))
