@@ -49,15 +49,10 @@
   (evil-define-key 'normal dired-mode-map "h" 'dired-up-directory)
   (evil-define-key 'normal dired-mode-map "l" 'dired-find-alternate-file)
   (evil-define-key 'normal dired-mode-map "q" 'kill-current-buffer)
-  (evil-define-key 'normal dired-mode-map "g" 'revert-buffer)
   (evil-define-key 'normal dired-mode-map "(" 'dired-hide-details-mode)
   (evil-define-key 'normal dired-mode-map "u" 'dired-unmark)
-  ;;(evil-define-key 'normal dired-mode-map "d" 'dired-do-delete)
-  ;; (evil-define-key 'normal dired-mode-map "R" 'dired-do-rename)
-  ;;(evil-define-key 'normal dired-mode-map "t" 'dired-create-empty-file)
-  ;;(evil-define-key 'normal dired-mode-map (kbd "<RET>") 'dired-find-alternate-file)
-  ;;(evil-define-key 'normal dired-mode-map "R" 'dired-do-rename)
-  ;;(evil-define-key 'normal dired-mode-map "r" 'dired-do-redisplay)
+  (evil-define-key 'normal dired-mode-map "gg" 'revert-buffer)
+  (evil-define-key 'normal magit-status-mode-map "g" 'magit-refresh)
   :custom
   (evil-collection-setup-minibuffer t)
   :config
@@ -75,4 +70,5 @@
   (eros-mode 1))
 
 (use-package magit
-  :after evil-collection)
+  :after evil-collection
+  :hook (magit-mode . evil-collection-init))
