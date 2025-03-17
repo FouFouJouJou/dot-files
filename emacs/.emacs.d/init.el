@@ -1,6 +1,6 @@
-(scroll-bar-mode -1)
-(menu-bar-mode -1)
-(tool-bar-mode -1)
+(scroll-bar-mode 0)
+(menu-bar-mode 0)
+(tool-bar-mode 0)
 (set-frame-font "Iosevka Term 11" nil t)
 (setf dired-kill-when-opening-new-dired-buffer t)
 (put 'dired-find-alternate-file 'disabled nil)
@@ -46,13 +46,28 @@
 (use-package evil-collection
   :after evil
   :init
+  ;; dired
   (evil-define-key 'normal dired-mode-map "h" 'dired-up-directory)
   (evil-define-key 'normal dired-mode-map "l" 'dired-find-alternate-file)
   (evil-define-key 'normal dired-mode-map "q" 'kill-current-buffer)
   (evil-define-key 'normal dired-mode-map "(" 'dired-hide-details-mode)
   (evil-define-key 'normal dired-mode-map "u" 'dired-unmark)
   (evil-define-key 'normal dired-mode-map "gg" 'revert-buffer)
+  (evil-define-key 'visual dired-mode-map "u" 'dired-unmark)
+  ;;(evil-define-key 'visual dired-mode-map "d" 'dired-flag-file-deletion)
+
+  ;; magit
   (evil-define-key 'normal magit-status-mode-map "g" 'magit-refresh)
+
+  ;; org
+  (evil-define-key 'normal org-mode-map "L" 'org-shiftright)
+  (evil-define-key 'normal org-mode-map "H" 'org-shiftleft)
+  (evil-define-key 'normal org-mode-map (kbd "M-k") 'org-metaup)
+  (evil-define-key 'normal org-mode-map (kbd "M-l") 'org-metaright)
+  (evil-define-key 'normal org-mode-map (kbd "M-j") 'org-metadown)
+  (evil-define-key 'normal org-mode-map (kbd "M-h") 'org-metaleft)
+  ;; vterm
+  ;; (evil-define-key 'normal vterm-mode-map (kbd "C-u") 'vterm--self-insert)
   :custom
   (evil-collection-setup-minibuffer t)
   :config
