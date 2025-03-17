@@ -7,7 +7,7 @@ Make sure to install [[https://command-not-found.com/stow][GNU Stow]]
 *** Applying configuration
 In order to apply *all* the configurations:
 #+BEGIN_SRC bash
-  stow --target=$HOME .
+  stow --target=$HOME --dotfiles .
 #+END_SRC
 
 In order to apply only a select number of configurations. For example only alacritty:
