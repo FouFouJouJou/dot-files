@@ -1,10 +1,22 @@
 (scroll-bar-mode 0)
 (menu-bar-mode 0)
 (tool-bar-mode 0)
-(set-frame-font "Iosevka Term 11" nil t)
+(set-frame-font "Iosevka Term 15" nil t)
 (setf dired-kill-when-opening-new-dired-buffer t)
 (put 'dired-find-alternate-file 'disabled nil)
 (global-font-lock-mode 1)
+(setq typescript-indent-level 2)
+(keymap-global-set "C-x k" 'kill-buffer-and-window)
+(keymap-global-set "C-x C-k" 'nil)
+(setq typescript-auto-indent-flag t)
+(setq org-confirm-babel-evaluate nil)
+(setq verb-enable-log 0)
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((shell . t)))
+
+(setq verb-auto-kill-response-buffers t)
+(setq verb-auto-kill-response-buffers t)
 
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
   backup-by-copying t
@@ -13,8 +25,10 @@
   kept-new-versions 20
   kept-old-versions 5)
 
-(setq evil-insert-state-cursor '(box)
-      evil-normal-state-cursor '(box))
+(setq evil-insert-state-cursor '("red" box)
+      evil-normal-state-cursor '("red" box))
+
+(blink-cursor-mode 1)
 
 (setq inhibit-startup-screen t)
 (setq custom-file "~/.emacs.d/custom.el")
@@ -54,14 +68,16 @@
   (evil-define-key 'normal dired-mode-map "u" 'dired-unmark)
   (evil-define-key 'normal dired-mode-map "gg" 'revert-buffer)
   (evil-define-key 'visual dired-mode-map "u" 'dired-unmark)
+  (evil-define-key 'normal dired-mode-map "T" 'dired-create-empty-file)
   ;;(evil-define-key 'visual dired-mode-map "d" 'dired-flag-file-deletion)
 
+  ;; (evil-define-key 'normal org-mode-map (kbd "C-c k") 'verb-kill-all-response-buffers)
   ;; magit
   (evil-define-key 'normal magit-status-mode-map "g" 'magit-refresh)
 
   ;; org
-  (evil-define-key 'normal org-mode-map "L" 'org-shiftright)
-  (evil-define-key 'normal org-mode-map "H" 'org-shiftleft)
+  ;; (evil-define-key 'normal org-mode-map "L" 'org-shiftright)
+  ;; (evil-define-key 'normal org-mode-map "H" 'org-shiftleft)
   (evil-define-key 'normal org-mode-map (kbd "M-k") 'org-metaup)
   (evil-define-key 'normal org-mode-map (kbd "M-l") 'org-metaright)
   (evil-define-key 'normal org-mode-map (kbd "M-j") 'org-metadown)
@@ -87,3 +103,13 @@
 (use-package magit
   :after evil-collection
   :hook (magit-mode . evil-collection-init))
+
+(use-package verb
+  :config (define-key org-mode-map (kbd "C-x C-r") verb-command-map)
+  :bind (("C-x C-k" . verb-kill-all-response-buffers)
+	 ("C-x C-<return>" . verb-send-request-on-point-no-window))
+  :hook (verb-mode . evil-collection-init))
+
+(use-package org
+  :mode ("\\.org\\'" . org-mode)
+  :hook (org-mode . evil-collection-init))
