@@ -1,0 +1,123 @@
+#+PROPERTY: header-args:emacs-lisp :tangle ./init.el
+* Editor
+#+begin_src emacs-lisp
+  (scroll-bar-mode 0)
+  (menu-bar-mode 0)
+  (tool-bar-mode 0)
+  (set-frame-font "Iosevka Term 15" nil t)
+  (global-font-lock-mode 1)
+  (blink-cursor-mode 1)
+  (setq inhibit-startup-screen t)
+#+end_src
+* Backup and custom files
+#+begin_src emacs-lisp
+  (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
+	backup-by-copying t
+	version-control t
+	delete-old-versions t
+	kept-new-versions 20
+	kept-old-versions 5)
+
+  (setq custom-file "~/.emacs.d/custom.el")
+#+end_src
+* Key maps
+#+begin_src emacs-lisp
+  (keymap-global-set "C-x k" 'kill-buffer-and-window)
+  (keymap-global-set "C-x C-k" 'nil)
+#+end_src
+* Dired
+#+begin_src emacs-lisp
+  (setf dired-kill-when-opening-new-dired-buffer t)
+  (put 'dired-find-alternate-file 'disabled nil)
+#+end_src
+* Use-package
+#+begin_src emacs-lisp
+  (setq package-selected-packages '(use-package))
+  (setq package-archives '(("elpa" . "https://tromey.com/elpa/")
+			   ("melpa" . "https://melpa.org/packages/")
+			   ("gnu" . "https://elpa.gnu.org/packages/")))
+  (package-initialize)
+  (unless package-archive-contents
+    (package-refresh-contents))
+  (require 'use-package)
+  (setq use-package-always-ensure t)
+#+end_src
+* Evil
+#+begin_src emacs-lisp
+  (use-package evil
+    :init
+    (setq evil-insert-state-cursor '("red" box)
+	  evil-normal-state-cursor '("red" box)
+	  evil-want-integration t
+	  evil-want-keybinding nil)
+    :config
+    (evil-mode 1))
+
+  (use-package evil-collection
+    :after evil
+    :init
+    ;; dired
+    (evil-define-key 'normal dired-mode-map "h" 'dired-up-directory)
+    (evil-define-key 'normal dired-mode-map "l" 'dired-find-alternate-file)
+    (evil-define-key 'normal dired-mode-map "q" 'kill-current-buffer)
+    (evil-define-key 'normal dired-mode-map "(" 'dired-hide-details-mode)
+    (evil-define-key 'normal dired-mode-map "u" 'dired-unmark)
+    (evil-define-key 'normal dired-mode-map "gg" 'revert-buffer)
+    (evil-define-key 'visual dired-mode-map "u" 'dired-unmark)
+    (evil-define-key 'normal dired-mode-map "T" 'dired-create-empty-file)
+    ;; magit
+    (evil-define-key 'normal magit-status-mode-map "g" 'magit-refresh)
+
+    ;; org
+    (evil-define-key 'normal org-mode-map (kbd "M-k") 'org-metaup)
+    (evil-define-key 'normal org-mode-map (kbd "M-l") 'org-metaright)
+    (evil-define-key 'normal org-mode-map (kbd "M-j") 'org-metadown)
+    (evil-define-key 'normal org-mode-map (kbd "M-h") 'org-metaleft)
+
+    :custom
+    (evil-collection-setup-minibuffer t)
+    :config
+    (evil-collection-init t))
+
+  (use-package key-chord
+    :init
+    (setq key-chord-two-keys-default 0.1)
+    (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
+    :config
+    (key-chord-mode 1))
+#+end_src
+* Typescript
+#+begin_src emacs-lisp
+  (setq typescript-indent-level 2)
+  (setq typescript-auto-indent-flag t)
+#+end_src
+* Org mode
+#+begin_src emacs-lisp
+  (use-package org
+    :init
+    (setq org-confirm-babel-evaluate nil)
+    :mode ("\\.org\\'" . org-mode)
+    :hook (org-mode . evil-collection-init)
+    :config
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((shell . t))))
+#+end_src
+* Eros mode
+#+begin_src emacs-lisp
+  (use-package eros
+    :config
+    (eros-mode 1))
+#+end_src
+
+* Verb mode
+#+begin_src emacs-lisp
+  (use-package verb
+    :config
+    (define-key org-mode-map (kbd "C-x C-r") verb-command-map)
+    (setq verb-enabled-log 0
+	  verb-auto-kill-response-buffers t)
+    :bind (("C-x C-k" . verb-kill-all-response-buffers)
+	   ("C-x C-<return>" . verb-send-request-on-point-no-window))
+    :hook (verb-mode . evil-collection-init))
+#+end_src
