@@ -156,6 +156,8 @@
     (evil-define-key 'normal dired-mode-map "gg" 'revert-buffer)
     (evil-define-key 'normal dired-mode-map "f" 'dired-create-empty-file)
     (evil-define-key 'visual dired-mode-map "u" 'dired-unmark)
+    ;; magit
+    (evil-define-key 'normal magit-status-mode-map "gg" 'magit-refresh)
     ;; org
     (evil-define-key 'normal org-mode-map (kbd "M-k") 'org-metaup)
     (evil-define-key 'normal org-mode-map (kbd "M-l") 'org-metaright)
