@@ -164,6 +164,10 @@
     (org-babel-do-load-languages
      'org-babel-load-languages
      '((shell . t))))
+
+  (use-package org-bullets
+    :config
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 #+end_src
 * Eros
 #+begin_src emacs-lisp
@@ -187,4 +191,13 @@
     (:map verb-response-headers-mode-map
 	  ("C-x C-k" . verb-kill-all-response-buffers))
     :hook (verb-mode . evil-collection-init))
+#+end_src
+
+* Dump jump
+#+begin_src emacs-lisp
+  (use-package dumb-jump
+  :init
+  (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
+  :config
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 #+end_src
