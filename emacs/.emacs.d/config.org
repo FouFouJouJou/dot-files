@@ -4,8 +4,8 @@
   (scroll-bar-mode 0)
   (menu-bar-mode 0)
   (tool-bar-mode 0)
-  ;; (set-frame-font "Iosevka Term 15" nil t)
-  (set-frame-font "Fira Code Medium" nil t)
+  (set-frame-font "Iosevka Term 15" nil t)
+  ;;(set-frame-font "Fira Code Medium" nil t)
   (global-font-lock-mode 1)
   (blink-cursor-mode 1)
   (setq ring-bell-function 'ignore)
@@ -13,7 +13,30 @@
 #+end_src
 * Buffers
 #+begin_src emacs-lisp
-
+  (setq display-buffer-alist '(
+  			     ("\\*Occur\\*"
+  			      (display-buffer-reuse-mode-window)
+  			      (window-height . fit-window-to-buffer)
+  			      (window-parameters . ((mode-line-format . none)))
+  			      )
+  			     ("\\*Async Shell Command\\*"
+  			       (display-buffer-no-window))
+  			     ("compilation"
+  			      (display-buffer-reuse-mode-window)
+  			      (body-function . delete-other-windows))
+  			     ("magit"
+  			      (display-buffer-reuse-mode-window)
+  			      (body-function . delete-other-windows))
+  			     ("\\*Help\\*"
+  			      (display-buffer-reuse-window)
+  			      (body-function . select-window))
+  			     ("\\*tide-documentation\\*"
+  			      (display-buffer-reuse-window)
+  			      (body-function . select-window))))
+  #+end_src
+* Hooks
+#+begin_src emacs-lisp
+  (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
 #+end_src
 * Backup and custom files
 #+begin_src emacs-lisp
@@ -29,6 +52,7 @@
 * Key maps
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-x k") 'kill-buffer-and-window)
+  (global-set-key (kbd "C-x C-x") 'kill-buffer)
   (global-set-key (kbd "C-x C-k") 'nil)
 #+end_src
 * Dired
@@ -41,8 +65,8 @@
 #+begin_src emacs-lisp
   (setq package-selected-packages '(use-package))
   (setq package-archives '(("elpa" . "https://tromey.com/elpa/")
-			   ("melpa" . "https://melpa.org/packages/")
-			   ("gnu" . "https://elpa.gnu.org/packages/")))
+  			 ("melpa" . "https://melpa.org/packages/")
+  			 ("gnu" . "https://elpa.gnu.org/packages/")))
   (package-initialize)
   (unless package-archive-contents
     (package-refresh-contents))
@@ -109,10 +133,13 @@
   (use-package evil
     :init
     (setq evil-insert-state-cursor '("red" box)
-	  evil-normal-state-cursor '("red" box)
-	  evil-want-integration t
-	  evil-want-keybinding nil)
+  	evil-normal-state-cursor '("red" box)
+  	evil-want-integration t
+  	evil-want-keybinding nil)
+
     :config
+    (add-to-list 'evil-normal-state-modes 'shell-command-mode)
+    (add-to-list 'evil-motion-state-modes 'compilation-mode)
     (evil-mode 1))
 
   (use-package evil-collection
@@ -127,14 +154,17 @@
     (evil-define-key 'normal dired-mode-map "gg" 'revert-buffer)
     (evil-define-key 'normal dired-mode-map "f" 'dired-create-empty-file)
     (evil-define-key 'visual dired-mode-map "u" 'dired-unmark)
+
     ;; magit
-    (evil-define-key 'normal magit-status-mode-map "g" 'magit-refresh)
+    (evil-define-key 'normal magit-status-mode-map "gg" 'magit-refresh)
 
     ;; org
     (evil-define-key 'normal org-mode-map (kbd "M-k") 'org-metaup)
     (evil-define-key 'normal org-mode-map (kbd "M-l") 'org-metaright)
     (evil-define-key 'normal org-mode-map (kbd "M-j") 'org-metadown)
     (evil-define-key 'normal org-mode-map (kbd "M-h") 'org-metaleft)
+    :hook
+    (dired-mode . evil-collection-init)
 
     :custom
     (evil-collection-setup-minibuffer t)
@@ -154,6 +184,30 @@
   (setq typescript-auto-indent-flag t)
 #+end_src
 * Org
+#+begin_src emacs-lisp
+  (use-package org
+    :init
+    (setq org-confirm-babel-evaluate nil)
+    :mode ("\\.org\\'" . org-mode)
+    :hook (org-mode . evil-collection-init)
+    :config
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((shell . t))))
+#+end_src
+* Company
+#+begin_src emacs-lisp
+  (use-package company)
+#+end_src
+* Tide
+#+begin_src emacs-lisp
+  (use-package tide
+    :init (setq eldoc-echo-area-use-multiline-p nil)
+    :after (typescript-mode company)
+    :hook ((typescript-mode . tide-setup)
+  	 (tide-mode . (lambda () (eldoc-mode -1)))))
+#+end_src
+* Org mode
 #+begin_src emacs-lisp
   (use-package org
     :init
@@ -191,13 +245,4 @@
     (:map verb-response-headers-mode-map
 	  ("C-x C-k" . verb-kill-all-response-buffers))
     :hook (verb-mode . evil-collection-init))
-#+end_src
-
-* Dump jump
-#+begin_src emacs-lisp
-  (use-package dumb-jump
-  :init
-  (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
-  :config
-  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 #+end_src
