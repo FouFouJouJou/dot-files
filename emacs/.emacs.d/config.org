@@ -20,7 +20,7 @@
   			      (window-parameters . ((mode-line-format . none)))
   			      )
   			     ("\\*Async Shell Command\\*"
-  			       (display-buffer-no-window))
+  			      (display-buffer-no-window))
   			     ("compilation"
   			      (display-buffer-reuse-mode-window)
   			      (body-function . delete-other-windows))
@@ -33,7 +33,7 @@
   			     ("\\*tide-documentation\\*"
   			      (display-buffer-reuse-window)
   			      (body-function . select-window))))
-  #+end_src
+#+end_src
 * Hooks
 #+begin_src emacs-lisp
   (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
@@ -41,11 +41,11 @@
 * Backup and custom files
 #+begin_src emacs-lisp
   (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
-	backup-by-copying t
-	version-control t
-	delete-old-versions t
-	kept-new-versions 20
-	kept-old-versions 5)
+        backup-by-copying t
+        version-control t
+        delete-old-versions t
+        kept-new-versions 20
+        kept-old-versions 5)
 
   (setq custom-file "~/.emacs.d/custom.el")
 #+end_src
@@ -89,18 +89,18 @@
     :config
     (ligature-set-ligatures 't '("www"))
     (ligature-set-ligatures 't '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
-				 ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
-				 "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
-				 "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
-				 "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
-				 "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
-				 "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
-				 "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
-				 ">=" ">>" ">-" "-~" "-|" "->" "--" "-<" "<~" "<*" "<|" "<:"
-				 "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
-				 "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
-				 "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
-				 "\\\\" "://"))
+  			       ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
+  			       "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
+  			       "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
+  			       "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
+  			       "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
+  			       "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
+  			       "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
+  			       ">=" ">>" ">-" "-~" "-|" "->" "--" "-<" "<~" "<*" "<|" "<:"
+  			       "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
+  			       "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
+  			       "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
+  			       "\\\\" "://"))
     (global-ligature-mode t))
 #+end_src
 * Evil
@@ -108,9 +108,9 @@
   (use-package evil
     :init
     (setq evil-insert-state-cursor '("red" box)
-	  evil-normal-state-cursor '("red" box)
-	  evil-want-integration t
-	  evil-want-keybinding nil)
+  	evil-normal-state-cursor '("red" box)
+  	evil-want-integration t
+  	evil-want-keybinding nil)
     :config
     (evil-mode 1))
 
@@ -129,6 +129,7 @@
     (evil-define-key 'normal dired-mode-map "gg" 'revert-buffer)
     (evil-define-key 'normal dired-mode-map "f" 'dired-create-empty-file)
     (evil-define-key 'visual dired-mode-map "u" 'dired-unmark)
+    (evil-define-key 'visual dired-mode-map "s" 'dired-do-relsymlink)
     ;; org
     (evil-define-key 'normal org-mode-map (kbd "M-k") 'org-metaup)
     (evil-define-key 'normal org-mode-map (kbd "M-l") 'org-metaright)
@@ -182,6 +183,45 @@
     :init (smex-initialize)
     :bind ("M-x" . smex))
 #+end_src
+* Org mode
+#+begin_src emacs-lisp
+  (use-package org
+    :init
+    (setq org-confirm-babel-evaluate nil)
+    (custom-set-faces
+     '(org-level-1 ((t (:inherit outline-1 :height 1.4))))
+     '(org-level-2 ((t (:inherit outline-2 :height 1.4))))
+     '(org-level-3 ((t (:inherit outline-3 :height 1.4))))
+     '(org-level-4 ((t (:inherit outline-4 :height 1.3))))
+     '(org-level-5 ((t (:inherit outline-5 :height 1.2))))
+     '(org-level-6 ((t (:inherit outline-5 :height 1.1))))
+     '(org-level-7 ((t (:inherit outline-5 :height 1.0)))))
+    :mode ("\\.org\\'" . org-mode)
+    :hook (org-mode . evil-collection-init)
+    :config
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((shell . t))))
+
+  (use-package org-bullets
+    :config
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+#+end_src
+* Ediff
+#+begin_src emacs-lisp
+  (use-package ediff
+    :ensure nil
+    :commands (ediff-buffers ediff-files ediff-buffers3 ediff-files3)
+    :init
+    (setq ediff-split-window-function 'split-window-horizontally)
+    (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+    :config
+    (setq ediff-keep-variants nil)
+    (setq ediff-make-buffers-readonly-at-startup nil)
+    (setq ediff-merge-revisions-with-ancestor t)
+    (setq ediff-show-clashes-only t))
+
+#+end_src
 * Typescript
 #+begin_src emacs-lisp
   (setq typescript-indent-level 2)
@@ -210,30 +250,6 @@
     :hook ((typescript-mode . tide-setup)
   	 (tide-mode . (lambda () (eldoc-mode -1)))))
 #+end_src
-* Org mode
-#+begin_src emacs-lisp
-  (use-package org
-    :init
-    (setq org-confirm-babel-evaluate nil)
-    (custom-set-faces
-     '(org-level-1 ((t (:inherit outline-1 :height 1.4))))
-     '(org-level-2 ((t (:inherit outline-2 :height 1.4))))
-     '(org-level-3 ((t (:inherit outline-3 :height 1.4))))
-     '(org-level-4 ((t (:inherit outline-4 :height 1.3))))
-     '(org-level-5 ((t (:inherit outline-5 :height 1.2))))
-     '(org-level-6 ((t (:inherit outline-5 :height 1.1))))
-     '(org-level-7 ((t (:inherit outline-5 :height 1.0)))))
-    :mode ("\\.org\\'" . org-mode)
-    :hook (org-mode . evil-collection-init)
-    :config
-    (org-babel-do-load-languages
-     'org-babel-load-languages
-     '((shell . t))))
-
-  (use-package org-bullets
-    :config
-    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
-#+end_src
 * Eros
 #+begin_src emacs-lisp
   (use-package eros
@@ -245,15 +261,15 @@
   (use-package verb
     :config
     (setq verb-enabled-log 'nil
-	  verb-auto-kill-response-buffers t)
+  	verb-auto-kill-response-buffers t)
     :bind
     (:map verb-mode-map
-	  ("C-c C-c" . verb-send-request-on-point)
-	  ("C-c C-<return>" . verb-send-request-on-point-no-window))
+  	("C-c C-c" . verb-send-request-on-point)
+  	("C-c C-<return>" . verb-send-request-on-point-no-window))
     (:map verb-response-body-mode-map
-	  ("C-x C-k" . verb-kill-all-response-buffers)
-	  ("C-c C-h" . verb-toggle-show-headers))
+  	("C-x C-k" . verb-kill-all-response-buffers)
+  	("C-c C-h" . verb-toggle-show-headers))
     (:map verb-response-headers-mode-map
-	  ("C-x C-k" . verb-kill-all-response-buffers))
+  	("C-x C-k" . verb-kill-all-response-buffers))
     :hook (verb-mode . evil-collection-init))
 #+end_src
