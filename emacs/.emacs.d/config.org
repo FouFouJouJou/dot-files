@@ -182,58 +182,6 @@
     :init (smex-initialize)
     :bind ("M-x" . smex))
 #+end_src
-* Flycheck
-#+begin_src emacs-lisp
-  (use-package evil
-    :init
-    (setq evil-insert-state-cursor '("red" box)
-  	evil-normal-state-cursor '("red" box)
-  	evil-want-integration t
-  	evil-want-keybinding nil)
-
-    :config
-    (add-to-list 'evil-normal-state-modes 'shell-command-mode)
-    (add-to-list 'evil-motion-state-modes 'compilation-mode)
-    (evil-mode 1))
-
-  (use-package evil-collection
-    :after evil
-    :custom
-    (evil-collection-setup-minibuffer t)
-
-    :init
-    (evil-define-key 'normal dired-mode-map "h" 'dired-up-directory)
-    (evil-define-key 'normal dired-mode-map "l" 'dired-find-alternate-file)
-    (evil-define-key 'normal dired-mode-map "q" 'kill-current-buffer)
-    (evil-define-key 'normal dired-mode-map "(" 'dired-hide-details-mode)
-    (evil-define-key 'normal dired-mode-map "u" 'dired-unmark)
-    (evil-define-key 'normal dired-mode-map "gg" 'revert-buffer)
-    (evil-define-key 'normal dired-mode-map "f" 'dired-create-empty-file)
-    (evil-define-key 'visual dired-mode-map "u" 'dired-unmark)
-    ;; magit
-    (evil-define-key 'normal magit-status-mode-map "gg" 'magit-refresh)
-    ;; org
-    (evil-define-key 'normal org-mode-map (kbd "M-k") 'org-metaup)
-    (evil-define-key 'normal org-mode-map (kbd "M-l") 'org-metaright)
-    (evil-define-key 'normal org-mode-map (kbd "M-j") 'org-metadown)
-    (evil-define-key 'normal org-mode-map (kbd "M-h") 'org-metaleft)
-    :hook
-    (dired-mode . evil-collection-init)
-
-    :config
-    (evil-set-initial-state 'shell-mode 'motion)
-    (evil-set-initial-state 'verb-mode 'motion)
-    (evil-set-initial-state 'verb-response-body-mode 'motion)
-    (evil-set-initial-state 'verb-response-headers-mode 'motion)
-    (evil-collection-init t))
-
-  (use-package key-chord
-    :init
-    (setq key-chord-two-keys-default 0.1)
-    (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
-    :config
-    (key-chord-mode 1))
-#+end_src
 * Typescript
 #+begin_src emacs-lisp
   (setq typescript-indent-level 2)
