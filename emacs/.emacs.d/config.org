@@ -14,25 +14,25 @@
 * Buffers
 #+begin_src emacs-lisp
   (setq display-buffer-alist '(("\\*Occur\\*"
-				(display-buffer-reuse-mode-window)
-				(window-height . fit-window-to-buffer)
-				(window-parameters . ((mode-line-format . none)))
-				)
-			       ("\\*Async Shell Command\\*"
-				(display-buffer-reuse-mode-window)
-				(body-function . select-window))
-			       ("compilation"
-				(display-buffer-reuse-mode-window)
-				(body-function . delete-other-windows))
-			       ("magit"
-				(display-buffer-reuse-mode-window)
-				(body-function . delete-other-windows))
-			       ("\\*Help\\*"
-				(display-buffer-reuse-window)
-				(body-function . select-window))
-			       ("\\*tide-documentation\\*"
-				(display-buffer-reuse-window)
-				(body-function . select-window))))
+			      (display-buffer-reuse-mode-window)
+			      (window-height . fit-window-to-buffer)
+			      (window-parameters . ((mode-line-format . none)))
+			      )
+			     ("\\*Async Shell Command\\*"
+			      (display-buffer-reuse-mode-window)
+			      (body-function . select-window))
+			     ("compilation"
+			      (display-buffer-reuse-mode-window)
+			      (body-function . delete-other-windows))
+			     ("magit"
+			      (display-buffer-reuse-mode-window)
+			      (body-function . delete-other-windows))
+			     ("\\*Help\\*"
+			      (display-buffer-reuse-window)
+			      (body-function . select-window))
+			     ("\\*tide-documentation\\*"
+			      (display-buffer-reuse-window)
+			      (body-function . select-window))))
 #+end_src
 * Hooks
 #+begin_src emacs-lisp
@@ -41,11 +41,11 @@
 * Backup and custom files
 #+begin_src emacs-lisp
   (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
-        backup-by-copying t
-        version-control t
-        delete-old-versions t
-        kept-new-versions 20
-        kept-old-versions 5)
+	backup-by-copying t
+	version-control t
+	delete-old-versions t
+	kept-new-versions 20
+	kept-old-versions 5)
 
   (setq custom-file "~/.emacs.d/custom.el")
 #+end_src
@@ -55,16 +55,31 @@
   (global-set-key (kbd "C-x C-x") 'kill-buffer)
   (global-set-key (kbd "C-x C-k") 'nil)
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-
-  (with-eval-after-load 'project
-    (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)
-    (define-key project-prefix-map "m" #'magit-project-status))
 #+end_src
 * Dired
 #+begin_src emacs-lisp
   (setf dired-kill-when-opening-new-dired-buffer t)
   (put 'dired-find-alternate-file 'disabled nil)
   (add-hook 'dired-mode 'evil-collection-init)
+#+end_src
+* Project
+#+begin_src emacs-lisp
+  (defun my/project-ansi-term ()
+    (interactive)
+    (let* ((project (project-current t))
+  	 (default-directory (project-root project))
+  	 (term-buffer-name (format "ansi-term: %s" (project-name project)))
+  	 (buffer (get-buffer term-buffer-name)))
+      (if buffer
+  	(switch-to-buffer buffer)
+        (ansi-term (getenv "SHELL") term-buffer-name))))
+
+  (use-package project
+    :config
+    (add-to-list 'project-switch-commands '(magit-project-status "Magit" "m") t)
+    (add-to-list 'project-switch-commands '(my/project-ansi-term "Terminal" "t") t)
+    :bind
+    (:map project-prefix-map ("t" . my/project-ansi-term) ("m" . magit-project-status)))
 #+end_src
 * Use-package
 #+begin_src emacs-lisp
