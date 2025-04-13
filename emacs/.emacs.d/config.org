@@ -4,7 +4,7 @@
   (scroll-bar-mode 0)
   (menu-bar-mode 0)
   (tool-bar-mode 0)
-  (set-frame-font "Iosevka Term 15" nil t)
+  (set-frame-font "Iosevka Term 12" nil t)
   ;;(set-frame-font "Fira Code Medium" nil t)
   (global-font-lock-mode 1)
   (blink-cursor-mode 1)
@@ -13,26 +13,26 @@
 #+end_src
 * Buffers
 #+begin_src emacs-lisp
-  (setq display-buffer-alist '(
-  			     ("\\*Occur\\*"
-  			      (display-buffer-reuse-mode-window)
-  			      (window-height . fit-window-to-buffer)
-  			      (window-parameters . ((mode-line-format . none)))
-  			      )
-  			     ("\\*Async Shell Command\\*"
-  			      (display-buffer-no-window))
-  			     ("compilation"
-  			      (display-buffer-reuse-mode-window)
-  			      (body-function . delete-other-windows))
-  			     ("magit"
-  			      (display-buffer-reuse-mode-window)
-  			      (body-function . delete-other-windows))
-  			     ("\\*Help\\*"
-  			      (display-buffer-reuse-window)
-  			      (body-function . select-window))
-  			     ("\\*tide-documentation\\*"
-  			      (display-buffer-reuse-window)
-  			      (body-function . select-window))))
+  (setq display-buffer-alist '(("\\*Occur\\*"
+				(display-buffer-reuse-mode-window)
+				(window-height . fit-window-to-buffer)
+				(window-parameters . ((mode-line-format . none)))
+				)
+			       ("\\*Async Shell Command\\*"
+				(display-buffer-reuse-mode-window)
+				(body-function . select-window))
+			       ("compilation"
+				(display-buffer-reuse-mode-window)
+				(body-function . delete-other-windows))
+			       ("magit"
+				(display-buffer-reuse-mode-window)
+				(body-function . delete-other-windows))
+			       ("\\*Help\\*"
+				(display-buffer-reuse-window)
+				(body-function . select-window))
+			       ("\\*tide-documentation\\*"
+				(display-buffer-reuse-window)
+				(body-function . select-window))))
 #+end_src
 * Hooks
 #+begin_src emacs-lisp
@@ -66,8 +66,8 @@
 #+begin_src emacs-lisp
   (setq package-selected-packages '(use-package))
   (setq package-archives '(("elpa" . "https://tromey.com/elpa/")
-  			 ("melpa" . "https://melpa.org/packages/")
-  			 ("gnu" . "https://elpa.gnu.org/packages/")))
+			   ("melpa" . "https://melpa.org/packages/")
+			   ("gnu" . "https://elpa.gnu.org/packages/")))
   (package-initialize)
   (unless package-archive-contents
     (package-refresh-contents))
@@ -107,10 +107,10 @@
 #+begin_src emacs-lisp
   (use-package evil
     :init
-    (setq evil-insert-state-cursor '("red" box)
-  	evil-normal-state-cursor '("red" box)
-  	evil-want-integration t
-  	evil-want-keybinding nil)
+    (setq evil-insert-state-cursor '(box)
+	  evil-normal-state-cursor '(box)
+	  evil-want-integration t
+	  evil-want-keybinding nil)
     :config
     (evil-mode 1))
 
@@ -149,6 +149,30 @@
     (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
     :config
     (key-chord-mode 1))
+#+end_src
+* Org mode
+#+begin_src emacs-lisp
+  (use-package org
+    :init
+    (setq org-confirm-babel-evaluate nil)
+    (custom-set-faces
+     '(org-level-1 ((t (:inherit outline-1 :height 1.4))))
+     '(org-level-2 ((t (:inherit outline-2 :height 1.4))))
+     '(org-level-3 ((t (:inherit outline-3 :height 1.4))))
+     '(org-level-4 ((t (:inherit outline-4 :height 1.3))))
+     '(org-level-5 ((t (:inherit outline-5 :height 1.2))))
+     '(org-level-6 ((t (:inherit outline-5 :height 1.1))))
+     '(org-level-7 ((t (:inherit outline-5 :height 1.0)))))
+    :mode ("\\.org\\'" . org-mode)
+    :hook (org-mode . evil-collection-init)
+    :config
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((shell . t))))
+
+  (use-package org-bullets
+    :config
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 #+end_src
 * Magit
 #+begin_src emacs-lisp
@@ -207,36 +231,12 @@
     :config
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 #+end_src
-* Ediff
-#+begin_src emacs-lisp
-  (use-package ediff
-    :ensure nil
-    :commands (ediff-buffers ediff-files ediff-buffers3 ediff-files3)
-    :init
-    (setq ediff-split-window-function 'split-window-horizontally)
-    (setq ediff-window-setup-function 'ediff-setup-windows-plain)
-    :config
-    (setq ediff-keep-variants nil)
-    (setq ediff-make-buffers-readonly-at-startup nil)
-    (setq ediff-merge-revisions-with-ancestor t)
-    (setq ediff-show-clashes-only t))
-
-#+end_src
 * Typescript
 #+begin_src emacs-lisp
   (setq typescript-indent-level 2)
   (setq typescript-auto-indent-flag t)
   (use-package typescript-mode
     :mode (("\\.ts" . typescript-mode)))
-#+end_src
-* Tide
-#+begin_src emacs-lisp
-  (use-package tide
-    :ensure t
-    :hook
-    (;;(typescript-mode . tide-setup)
-     (tide-mode . (lambda () (eldoc-mode -1))))
-    :bind (("C-c d" . tide-documentation-at-point)))
 #+end_src
 * Company
 #+begin_src emacs-lisp
@@ -248,7 +248,7 @@
     :init (setq eldoc-echo-area-use-multiline-p nil)
     :after (typescript-mode company)
     :hook ((typescript-mode . tide-setup)
-  	 (tide-mode . (lambda () (eldoc-mode -1)))))
+	   (tide-mode . (lambda () (eldoc-mode -1)))))
 #+end_src
 * Eros
 #+begin_src emacs-lisp
@@ -272,4 +272,29 @@
     (:map verb-response-headers-mode-map
   	("C-x C-k" . verb-kill-all-response-buffers))
     :hook (verb-mode . evil-collection-init))
+#+end_src
+
+* Beacon
+#+begin_src emacs-lisp
+  (use-package beacon
+    :config
+    (setq beacon-blink-delay 0.1)
+    (setq beacon-blink-duration 0.4)
+    :init
+    (beacon-mode 1))
+#+end_src
+* Ediff
+#+begin_src emacs-lisp
+  (use-package ediff
+    :ensure nil
+    :commands (ediff-buffers ediff-files ediff-buffers3 ediff-files3)
+    :init
+    (setq ediff-split-window-function 'split-window-horizontally)
+    (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+    :config
+    (setq ediff-keep-variants nil)
+    (setq ediff-make-buffers-readonly-at-startup nil)
+    (setq ediff-merge-revisions-with-ancestor t)
+    (setq ediff-show-clashes-only t))
+
 #+end_src
