@@ -55,6 +55,10 @@
   (global-set-key (kbd "C-x C-x") 'kill-buffer)
   (global-set-key (kbd "C-x C-k") 'nil)
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
+  (with-eval-after-load 'project
+    (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)
+    (keymap-set project-prefix-map "m" #'magit-project-status))
 #+end_src
 * Dired
 #+begin_src emacs-lisp
@@ -66,8 +70,8 @@
 #+begin_src emacs-lisp
   (setq package-selected-packages '(use-package))
   (setq package-archives '(("elpa" . "https://tromey.com/elpa/")
-			   ("melpa" . "https://melpa.org/packages/")
-			   ("gnu" . "https://elpa.gnu.org/packages/")))
+			 ("melpa" . "https://melpa.org/packages/")
+			 ("gnu" . "https://elpa.gnu.org/packages/")))
   (package-initialize)
   (unless package-archive-contents
     (package-refresh-contents))
@@ -89,18 +93,18 @@
     :config
     (ligature-set-ligatures 't '("www"))
     (ligature-set-ligatures 't '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
-  			       ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
-  			       "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
-  			       "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
-  			       "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
-  			       "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
-  			       "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
-  			       "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
-  			       ">=" ">>" ">-" "-~" "-|" "->" "--" "-<" "<~" "<*" "<|" "<:"
-  			       "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
-  			       "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
-  			       "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
-  			       "\\\\" "://"))
+				 ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
+				 "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
+				 "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
+				 "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
+				 "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
+				 "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
+				 "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
+				 ">=" ">>" ">-" "-~" "-|" "->" "--" "-<" "<~" "<*" "<|" "<:"
+				 "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
+				 "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
+				 "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
+				 "\\\\" "://"))
     (global-ligature-mode t))
 #+end_src
 * Evil
@@ -108,9 +112,9 @@
   (use-package evil
     :init
     (setq evil-insert-state-cursor '(box)
-	  evil-normal-state-cursor '(box)
-	  evil-want-integration t
-	  evil-want-keybinding nil)
+	evil-normal-state-cursor '(box)
+	evil-want-integration t
+	evil-want-keybinding nil)
     :config
     (evil-mode 1))
 
@@ -178,6 +182,7 @@
 #+begin_src emacs-lisp
   (use-package magit
     :after evil-collection
+    :hook (magit-mode . evil-collection-init)
     :config
     (evil-define-key 'normal magit-status-mode-map "gg" 'magit-refresh))
 #+end_src
@@ -248,7 +253,7 @@
     :init (setq eldoc-echo-area-use-multiline-p nil)
     :after (typescript-mode company)
     :hook ((typescript-mode . tide-setup)
-	   (tide-mode . (lambda () (eldoc-mode -1)))))
+  	 (tide-mode . (lambda () (eldoc-mode -1)))))
 #+end_src
 * Eros
 #+begin_src emacs-lisp
