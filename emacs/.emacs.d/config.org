@@ -301,7 +301,8 @@
     (setq ediff-show-clashes-only t))
 
 #+end_src
-* Profiler start
+* Profiler stop
 #+begin_src emacs-lisp
   (profiler-stop)
 #+end_src
+
