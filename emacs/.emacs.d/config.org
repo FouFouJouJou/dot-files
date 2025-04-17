@@ -99,13 +99,14 @@
 #+begin_src emacs-lisp
   ;; TODO make key adding interactive with something like dired
   (defun eval-ssh ()
-    (let ((result 
-  	 (shell-command-to-string "eval $(ssh-agent -s) && ssh-add ~/.ssh/dot-files && ssh-add ~/.ssh/mailer && echo $SSH_AUTH_SOCK")))
-      (when (string-match "/tmp/ssh-*.*" result)
-        (setenv "SSH_AUTH_SOCK" (match-string 0 result)))))
-    (eval-ssh)
+    (let ((cmd "eval $(ssh-agent -s) && ssh-add ~/.ssh/dot-files && ssh-add ~/.ssh/mailer && echo $SSH_AUTH_SOCK"))
+      (progn
+  	(shell-command-to-string "rm -r /tmp/ssh-*")
+  	(let ((result (shell-command-to-string cmd)))
+      (when (string-match "/tmp/ssh-XXXXXX*.*" result)
+  	(setenv "SSH_AUTH_SOCK" (match-string 0 result)))))))
+  (eval-ssh)
 #+end_src
-
 * Use-package
 #+begin_src emacs-lisp
   (setq package-selected-packages '(use-package))
