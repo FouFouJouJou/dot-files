@@ -15,9 +15,15 @@
   (setq ring-bell-function 'ignore)
   (setq inhibit-startup-screen t)
 #+end_src
-* Bookmarks
-#+begin_src emcas-lisp
-  (setq bookmark-save-flag 1)
+* Key maps
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-x k") 'kill-buffer-and-window)
+  (global-set-key (kbd "C-x C-x") 'kill-buffer)
+  (global-set-key (kbd "C-x C-k") 'nil)
+  (global-set-key (kbd "C-x C-p") 'nil)
+  (global-set-key (kbd "C-x e") 'emoji-insert)
+  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
 #+end_src
 * Buffers
 #+begin_src emacs-lisp
@@ -49,6 +55,10 @@
   			     ("\\*eldoc\\*"
   			      (display-buffer-no-window))))
 #+end_src
+* Bookmarks
+#+begin_src emcas-lisp
+  (setq bookmark-save-flag 1)
+#+end_src
 * Compilation
 #+begin_src emacs-lisp
   (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
@@ -76,16 +86,6 @@
 
   (setq custom-file "~/.emacs.d/custom.el")
 #+end_src
-* Key maps
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-x k") 'kill-buffer-and-window)
-  (global-set-key (kbd "C-x C-x") 'kill-buffer)
-  (global-set-key (kbd "C-x C-k") 'nil)
-  (global-set-key (kbd "C-x C-p") 'nil)
-  (global-set-key (kbd "C-x e") 'emoji-insert)
-  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-
-#+end_src
 * Dired
 #+begin_src emacs-lisp
   (setf dired-kill-when-opening-new-dired-buffer t)
@@ -94,7 +94,7 @@
 #+end_src
 * SSH
 #+begin_src emacs-lisp
-  (setq eval-ssh--socket-files '("~/.ssh/dot-files" "~/.ssh/mailer"))
+  (setq eval-ssh--socket-files '("~/.ssh/github" "~/.ssh/mailer"))
 
   (defun eval-ssh ()
     (let* ((format-string "eval $(ssh-agent -s) && ssh-add %s && echo $SSH_AUTH_SOCK")
