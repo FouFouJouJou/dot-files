@@ -15,36 +15,39 @@
   (setq ring-bell-function 'ignore)
   (setq inhibit-startup-screen t)
 #+end_src
-* Bokmarks
+* Bookmarks
 #+begin_src emcas-lisp
   (setq bookmark-save-flag 1)
 #+end_src
 * Buffers
 #+begin_src emacs-lisp
-  (setq display-buffer-alist '(("\\*Occur\\*"
+  (setq display-buffer-alist '(("\\*Buffer List\\*"
 				(display-buffer-reuse-mode-window)
-				(window-height . fit-window-to-buffer)
-				(body-function . select-window)
-				(window-parameters . ((mode-line-format . none))))
-			       ("\\*Async Shell Command\\*"
-				(display-buffer-reuse-mode-window)
-				(body-function . select-window))
-			       ("compilation"
-				(display-buffer-reuse-mode-window)
-				(body-function . delete-other-windows))
-			       ("magit"
-				(display-buffer-reuse-mode-window)
-				(body-function . delete-other-windows))
-			       ("\\*Help\\*"
-				(display-buffer-reuse-window)
-				(body-function . select-window))
-			       ("\\*tide-documentation\\*"
-				(display-buffer-reuse-window)
-				(window-height . fit-window-to-buffer)
-				(window-parameters . ((mode-line-format . none)))
-				(body-function . select-window))
-			       ("\\*eldoc\\*"
-				(display-buffer-no-window))))
+  			      (body-function . select-window))
+  			     ("\\*Occur\\*"
+  			      (display-buffer-reuse-mode-window)
+  			      (window-height . fit-window-to-buffer)
+  			      (body-function . select-window)
+  			      (window-parameters . ((mode-line-format . none))))
+  			     ("\\*Async Shell Command\\*"
+  			      (display-buffer-reuse-mode-window)
+  			      (body-function . select-window))
+  			     ("compilation"
+  			      (display-buffer-reuse-mode-window)
+  			      (body-function . delete-other-windows))
+  			     ("magit"
+  			      (display-buffer-reuse-mode-window)
+  			      (body-function . delete-other-windows))
+  			     ("\\*Help\\*"
+  			      (display-buffer-reuse-window)
+  			      (body-function . select-window))
+  			     ("\\*tide-documentation\\*"
+  			      (display-buffer-reuse-window)
+  			      (window-height . fit-window-to-buffer)
+  			      (window-parameters . ((mode-line-format . none)))
+  			      (body-function . select-window))
+  			     ("\\*eldoc\\*"
+  			      (display-buffer-no-window))))
 #+end_src
 * Compilation
 #+begin_src emacs-lisp
@@ -79,7 +82,9 @@
   (global-set-key (kbd "C-x C-x") 'kill-buffer)
   (global-set-key (kbd "C-x C-k") 'nil)
   (global-set-key (kbd "C-x C-p") 'nil)
+  (global-set-key (kbd "C-x e") 'emoji-insert)
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
 #+end_src
 * Dired
 #+begin_src emacs-lisp
@@ -316,9 +321,9 @@
     (setq ediff-make-buffers-readonly-at-startup nil)
     (setq ediff-merge-revisions-with-ancestor t)
     (setq ediff-show-clashes-only t))
-
 #+end_src
 * Profiler stop
 #+begin_src emacs-lisp
   (profiler-stop)
 #+end_src
+
