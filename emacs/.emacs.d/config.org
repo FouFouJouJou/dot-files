@@ -106,12 +106,6 @@
     :bind
     (:map project-prefix-map ("t" . my/project-ansi-term) ("m" . magit-project-status)))
 #+end_src
-* Eldoc
-#+begin_src emacs-lisp
-  (use-package eldoc
-    :config
-    (setq eldoc-display-functions (list 'eldoc-display-in-echo-area)))
-#+end_src
 * Use-package
 #+begin_src emacs-lisp
   (setq package-selected-packages '(use-package))
@@ -276,6 +270,12 @@
     :after (typescript-mode company)
     :hook ((typescript-mode . tide-setup)
   	 (tide-mode . (lambda () (eldoc-mode -1)))))
+#+end_src
+* Eldoc
+#+begin_src emacs-lisp
+  (use-package eldoc
+    :config
+    (setq eldoc-display-functions (list 'eldoc-display-in-echo-area)))
 #+end_src
 * Eros
 #+begin_src emacs-lisp
