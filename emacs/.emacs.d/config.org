@@ -97,9 +97,10 @@
 #+end_src
 * SSH
 #+begin_src emacs-lisp
-  ;; TODO make key adding interactive with something like dired
+  ;; TODO make key adding interactive with something like dired or by setting a list variable
+  ;; (setq eval-ssh--socket-files '("~/.ssh/dot-files" "~/.ssh/mailer"))
   (defun eval-ssh ()
-    (let ((cmd "eval $(ssh-agent -s) && ssh-add ~/.ssh/dot-files && ssh-add ~/.ssh/mailer && echo $SSH_AUTH_SOCK"))
+    (let ((cmd "eval $(ssh-agent -s) && ssh-add ~/.ssh/dot-files ~/.ssh/mailer && echo $SSH_AUTH_SOCK"))
       (progn
   	(shell-command-to-string "rm -r /tmp/ssh-*")
   	(let ((result (shell-command-to-string cmd)))
