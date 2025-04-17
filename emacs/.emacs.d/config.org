@@ -89,22 +89,11 @@
 #+end_src
 * Project
 #+begin_src emacs-lisp
-  (defun my/project-ansi-term ()
-    (interactive)
-    (let* ((project (project-current t))
-  	 (default-directory (project-root project))
-  	 (term-buffer-name (format "ansi-term: %s" (project-name project)))
-  	 (buffer (get-buffer term-buffer-name)))
-      (if buffer
-  	(switch-to-buffer buffer)
-        (ansi-term (getenv "SHELL") term-buffer-name))))
-
   (use-package project
     :config
     (add-to-list 'project-switch-commands '(magit-project-status "Magit" "m") t)
-    (add-to-list 'project-switch-commands '(my/project-ansi-term "Terminal" "t") t)
     :bind
-    (:map project-prefix-map ("t" . my/project-ansi-term) ("m" . magit-project-status)))
+    (:map project-prefix-map ("m" . magit-project-status)))
 #+end_src
 * Use-package
 #+begin_src emacs-lisp
