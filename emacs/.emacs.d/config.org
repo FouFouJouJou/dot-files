@@ -22,8 +22,8 @@
 * Buffers
 #+begin_src emacs-lisp
   (setq display-buffer-alist '(("\\*Buffer List\\*"
-				(display-buffer-reuse-mode-window)
-  			      (body-function . select-window))
+  			      (display-buffer-reuse-mode-window)
+				(body-function . select-window))
   			     ("\\*Occur\\*"
   			      (display-buffer-reuse-mode-window)
   			      (window-height . fit-window-to-buffer)
