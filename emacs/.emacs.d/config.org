@@ -24,8 +24,8 @@
   (setq display-buffer-alist '(("\\*Occur\\*"
 			      (display-buffer-reuse-mode-window)
 			      (window-height . fit-window-to-buffer)
-			      (window-parameters . ((mode-line-format . none)))
-			      )
+                              (body-function . select-window)
+			      (window-parameters . ((mode-line-format . none))))
 			     ("\\*Async Shell Command\\*"
 			      (display-buffer-reuse-mode-window)
 			      (body-function . select-window))
@@ -55,7 +55,7 @@
       (eshell-send-input)))
 
   (add-hook 'eshell-mode-hook
-  	  '(lambda()
+  	  #'(lambda()
                (local-set-key (kbd "C-l") 'eshell-clear-buffer)))
 #+end_src
 * Backup and custom files
@@ -83,35 +83,15 @@
   (put 'dired-find-alternate-file 'disabled nil)
   (add-hook 'dired-mode 'evil-collection-init)
 #+end_src
-* Project
-#+begin_src emacs-lisp
-  (defun my/project-ansi-term ()
-    (interactive)
-    (let* ((project (project-current t))
-  	 (default-directory (project-root project))
-  	 (term-buffer-name (format "ansi-term: %s" (project-name project)))
-  	 (buffer (get-buffer term-buffer-name)))
-      (if buffer
-  	(switch-to-buffer buffer)
-        (ansi-term (getenv "SHELL") term-buffer-name))))
-
-  (use-package project
-    :config
-    (add-to-list 'project-switch-commands '(magit-project-status "Magit" "m") t)
-    (add-to-list 'project-switch-commands '(my/project-ansi-term "Terminal" "t") t)
-    :bind
-    (:map project-prefix-map ("t" . my/project-ansi-term) ("m" . magit-project-status)))
-#+end_src
 * Use-package
 #+begin_src emacs-lisp
   (setq package-selected-packages '(use-package))
   (setq package-archives '(("elpa" . "https://tromey.com/elpa/")
-  			 ("melpa" . "https://melpa.org/packages/")
-  			 ("gnu" . "https://elpa.gnu.org/packages/")))
+			 ("melpa" . "https://melpa.org/packages/")
+			 ("gnu" . "https://elpa.gnu.org/packages/")))
   (package-initialize)
   (unless package-archive-contents
     (package-refresh-contents))
-  ;; (require 'use-package)
   (setq use-package-always-ensure t)
 #+end_src
 * Themes
@@ -148,14 +128,16 @@
   (use-package evil
     :init
     (setq evil-insert-state-cursor '(box)
-  	evil-normal-state-cursor '(box)
-  	evil-want-integration t
-  	evil-want-minibuffer t
-  	evil-want-keybinding nil)
+	evil-normal-state-cursor '(box)
+	evil-want-integration t
+	evil-want-minibuffer t
+	evil-want-keybinding nil)
     :config
     (evil-mode 1))
 
   (use-package evil-collection
+  :config
+    (setq evil-collection-setup-minibuffer t)
     :after evil
 
     :init
@@ -210,10 +192,18 @@
      'org-babel-load-languages
      '((shell . t))))
 #+end_src
+* Project
+#+begin_src emacs-lisp
+  (use-package project
+    :config
+    (define-key project-prefix-map "m" #'magit-project-status)
+    (add-to-list 'project-switch-commands '(magit-project-status "Magit" "m") t))
+
+#+end_src
 * Magit
 #+begin_src emacs-lisp
   (use-package magit
-    :after evil-collection
+    :after evil-collection project
     :hook (magit-mode . evil-collection-init)
     :config
     (evil-define-key 'normal magit-status-mode-map "gg" 'magit-refresh))
