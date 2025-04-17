@@ -260,6 +260,7 @@
   (use-package tide
     :init (setq eldoc-echo-area-use-multiline-p nil)
     :after (typescript-mode company)
+    :bind (:map typescript-mode-map ("K" . eldoc-print-current-symbol-info))
     :hook ((typescript-mode . tide-setup)
   	 (tide-mode . (lambda () (eldoc-mode -1)))))
 #+end_src
