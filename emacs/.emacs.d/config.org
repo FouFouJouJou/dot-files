@@ -3,13 +3,27 @@
 #+begin_src emacs-lisp
   (profiler-start 'cpu)
 #+end_src
+* Global vars
+#+begin_src emacs-lisp
+  (defvar is-macos (string-equal "darwin" system-type))
+#+end_src
+* MacOS
+#+begin_src emacs-lisp
+  (if is-macos
+      (setq ns-alternate-modifier 'meta
+  	  mac-right-alternate-modifier 'none
+  	  mac-right-option-modifier nil
+  	  mac-control-modifier 'control
+  	  mac-command-modifier 'meta))
+#+end_src
+#+PROPERTY: header-args:emacs-lisp :tangle ~/.emacs.d/init.el
 * Editor
 #+begin_src emacs-lisp
   (scroll-bar-mode 0)
   (menu-bar-mode 0)
   (tool-bar-mode 0)
-  (set-frame-font "Iosevka Term 12" nil t)
-  ;;(set-frame-font "Fira Code Medium" nil t)
+  (when (not is-macos)
+    (set-frame-font "Iosevka Term 12" nil t))
   (global-font-lock-mode 1)
   (blink-cursor-mode 1)
   (setq ring-bell-function 'ignore)
@@ -95,17 +109,22 @@
 #+end_src
 * SSH
 #+begin_src emacs-lisp
-  (setq eval-ssh--socket-files '("~/.ssh/github" "~/.ssh/mailer"))
+  (setq eval-ssh--socket-files '("~/.ssh/ats"))
 
-  (defun eval-ssh ()
+  (defun eval-ssh-darwin () 
+    (let* ((format-string "ssh-add %s")
+  	     (cmd (format format-string (string-join eval-ssh--socket-files " "))))
+      (shell-command-to-string cmd)))
+
+  (defun eval-ssh-gnu ()
     (let* ((format-string "eval $(ssh-agent -s) && ssh-add %s && echo $SSH_AUTH_SOCK")
-	 (cmd (format format-string (string-join eval-ssh--socket-files " "))))
+    	 (cmd (format format-string (string-join eval-ssh--socket-files " "))))
       (progn
-	(shell-command-to-string "rm -r /tmp/ssh-*")
-	(let ((result (shell-command-to-string cmd)))
-      (when (string-match "/tmp/ssh-.*" result)
-	(setenv "SSH_AUTH_SOCK" (match-string 0 result)))))))
-  (eval-ssh)
+        (shell-command-to-string "rm -r /tmp/ssh-*")
+        (let ((result (shell-command-to-string cmd)))
+    	(when (string-match "/tmp/ssh-.*" result)
+    	  (setenv "SSH_AUTH_SOCK" (match-string 0 result)))))))
+  (if is-macos (eval-ssh-darwin) (eval-ssh-gnu))
 #+end_src
 * Use-package
 #+begin_src emacs-lisp
@@ -327,4 +346,3 @@
 #+begin_src emacs-lisp
   (profiler-stop)
 #+end_src
-
