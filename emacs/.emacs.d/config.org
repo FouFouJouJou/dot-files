@@ -71,7 +71,7 @@
 				(display-buffer-no-window))))
 #+end_src
 * Bookmarks
-#+begin_src emcas-lisp
+#+begin_src emacs-lisp
   (setq bookmark-save-flag 1)
 #+end_src
 * Compilation
