@@ -44,30 +44,31 @@
 * Buffers
 #+begin_src emacs-lisp
   (setq display-buffer-alist '(("\\*Buffer List\\*"
-				(display-buffer-reuse-mode-window)
-				(body-function . select-window))
-			       ("\\*Occur\\*"
-				(display-buffer-reuse-mode-window)
-				(window-height . fit-window-to-buffer)
-				(body-function . select-window)
-				(window-parameters . ((mode-line-format . none))))
-			       ("\\*Async Shell Command\\*"
-				(display-buffer-reuse-mode-window)
-				(body-function . select-window))
-			       ("compilation"
-				(display-buffer-reuse-mode-window)
-				(body-function . delete-other-windows))
-			       ("magit"
-				(display-buffer-reuse-mode-window)
-				(body-function . delete-other-windows))
-			       ("\\*Help\\*"
-				(display-buffer-reuse-window)
-				(body-function . select-window))
-			       ("\\*tide-documentation\\*"
-				(display-buffer-reuse-window)
-				(window-height . fit-window-to-buffer)
-				(window-parameters . ((mode-line-format . none)))
-				(body-function . select-window))
+  			      (display-buffer-reuse-mode-window)
+  			      (window-height . fit-window-to-buffer)
+  			      (body-function . select-window))
+  			     ("\\*Occur\\*"
+  			      (display-buffer-reuse-mode-window)
+  			      (window-height . fit-window-to-buffer)
+  			      (body-function . select-window)
+  			      (window-parameters . ((mode-line-format . none))))
+  			     ("\\*Async Shell Command\\*"
+  			      (display-buffer-reuse-mode-window)
+  			      (body-function . select-window))
+  			     ("compilation"
+  			      (display-buffer-reuse-mode-window)
+  			      (body-function . delete-other-windows))
+  			     ("magit"
+  			      (display-buffer-reuse-mode-window)
+  			      (body-function . delete-other-windows))
+  			     ("\\*Help\\*"
+  			      (display-buffer-reuse-window)
+  			      (body-function . select-window))
+  			     ("\\*tide-documentation\\*"
+  			      (display-buffer-reuse-window)
+  			      (window-height . fit-window-to-buffer)
+  			      (window-parameters . ((mode-line-format . none)))
+  			      (body-function . select-window))
 			       ("\\*eldoc\\*"
 				(display-buffer-no-window))))
 #+end_src
