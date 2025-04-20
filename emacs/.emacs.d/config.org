@@ -206,7 +206,7 @@
     ;; tide + docs
     (evil-define-key 'normal typescript-mode-map (kbd "C-x C-k") 'eldoc-print-current-symbol-info)
     (evil-define-key 'normal typescript-mode-map (kbd "K") 'tide-documentation-at-point)
-    (evil-define-key 'normal typescript-mode-map "gd" 'evil-jump-to-tag)
+    (evil-define-key 'normal tide-mode-map "gd" 'evil-jump-to-tag)
 
     :config
     (evil-set-initial-state 'shell-mode 'motion)
@@ -312,10 +312,11 @@
 * Tide
 #+begin_src emacs-lisp
   (use-package tide
-    :init (setq eldoc-echo-area-use-multiline-p nil)
+    :init
+    (setq eldoc-echo-area-use-multiline-p nil)
     :after (typescript-mode company)
     :hook ((typescript-mode . tide-setup)
-  	 (tide-mode . (lambda () (eldoc-mode -1)))))
+	 (tide-mode . (lambda () (eldoc-mode -1)))))
 #+end_src
 * Eldoc
 #+begin_src emacs-lisp
@@ -334,16 +335,16 @@
   (use-package verb
     :config
     (setq verb-enabled-log 'nil
-  	verb-auto-kill-response-buffers t)
+	  verb-auto-kill-response-buffers t)
     :bind
     (:map verb-mode-map
-  	("C-c C-c" . verb-send-request-on-point)
-  	("C-c C-<return>" . verb-send-request-on-point-no-window))
+	  ("C-c C-c" . verb-send-request-on-point)
+	  ("C-c C-<return>" . verb-send-request-on-point-no-window))
     (:map verb-response-body-mode-map
-  	("C-x C-k" . verb-kill-all-response-buffers)
-  	("C-c C-h" . verb-toggle-show-headers))
+	  ("C-x C-k" . verb-kill-all-response-buffers)
+	  ("C-c C-h" . verb-toggle-show-headers))
     (:map verb-response-headers-mode-map
-  	("C-x C-k" . verb-kill-all-response-buffers))
+	  ("C-x C-k" . verb-kill-all-response-buffers))
     :hook (verb-mode . evil-collection-init))
 #+end_src
 * Profiler stop
