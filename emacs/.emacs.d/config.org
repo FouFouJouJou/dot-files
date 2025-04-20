@@ -36,6 +36,7 @@
   (global-set-key (kbd "C-x C-x") 'kill-buffer)
   (global-set-key (kbd "C-x C-k") 'nil)
   (global-set-key (kbd "C-x C-p") 'nil)
+  (global-set-key (kbd "C-x h") 'nil)
   (global-set-key (kbd "C-x e") 'emoji-insert)
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
@@ -76,6 +77,7 @@
 #+end_src
 * Compilation
 #+begin_src emacs-lisp
+  (add-hook 'compilation-mode 'evil-collection-init)
   (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
 #+end_src
 * Eshell
@@ -109,7 +111,7 @@
 #+end_src
 * SSH
 #+begin_src emacs-lisp
-  (setq eval-ssh--socket-files '("~/.ssh/ats"))
+  (setq eval-ssh--socket-files '("~/.ssh/mailer" "~/.ssh/dot-files"))
 
   (defun eval-ssh-darwin () 
     (let* ((format-string "ssh-add %s")
@@ -171,10 +173,10 @@
   (use-package evil
     :init
     (setq evil-insert-state-cursor '(box)
-	evil-normal-state-cursor '(box)
-	evil-want-integration t
-	evil-want-minibuffer t
-	evil-want-keybinding nil)
+  	evil-normal-state-cursor '(box)
+  	evil-want-integration t
+  	evil-want-minibuffer t
+  	evil-want-keybinding nil)
     :config
     (evil-mode 1))
 
@@ -203,6 +205,7 @@
     ;; tide + docs
     (evil-define-key 'normal typescript-mode-map (kbd "C-x C-k") 'eldoc-print-current-symbol-info)
     (evil-define-key 'normal typescript-mode-map (kbd "K") 'tide-documentation-at-point)
+    (evil-define-key 'normal typescript-mode-map "gd" 'evil-jump-to-tag)
 
     :config
     (evil-set-initial-state 'shell-mode 'motion)
