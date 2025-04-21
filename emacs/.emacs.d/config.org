@@ -136,10 +136,15 @@
   (setq package-archives '(("elpa" . "https://tromey.com/elpa/")
 			 ("melpa" . "https://melpa.org/packages/")
 			 ("gnu" . "https://elpa.gnu.org/packages/")))
-  (package-initialize)
-  (unless package-archive-contents
-    (package-refresh-contents))
   (setq use-package-always-ensure t)
+#+end_src
+* Auto package update
+#+begin_src emacs-lisp
+  (use-package auto-package-update
+    :config
+    (setq auto-package-update-delete-old-versions t)
+    (setq auto-package-update-hide-results t)
+    (auto-package-update-maybe))
 #+end_src
 * Themes
 #+begin_src emacs-lisp
@@ -246,6 +251,7 @@
 * Project
 #+begin_src emacs-lisp
   (use-package project
+    :ensure nil
     :config
     (define-key project-prefix-map "m" #'magit-project-status)
     (add-to-list 'project-switch-commands '(magit-project-status "Magit" "m") t))
@@ -315,6 +321,7 @@
     :after evil
     :init
     (setq eldoc-echo-area-use-multiline-p nil)
+    :config
     (evil-define-key 'normal tide-mode-map "gd" 'evil-jump-to-tag)
     :after (typescript-mode company)
     :hook ((typescript-mode . tide-setup)
