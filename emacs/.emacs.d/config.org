@@ -46,6 +46,7 @@
   (setq display-buffer-alist '(("\\*Buffer List\\*"
   			      (display-buffer-reuse-mode-window)
   			      (window-height . fit-window-to-buffer)
+  			      (dedicated . t)
   			      (body-function . select-window))
   			     ("\\*Occur\\*"
   			      (display-buffer-reuse-mode-window)
@@ -69,8 +70,8 @@
   			      (window-height . fit-window-to-buffer)
   			      (window-parameters . ((mode-line-format . none)))
   			      (body-function . select-window))
-			       ("\\*eldoc\\*"
-				(display-buffer-no-window))))
+  			       ("\\*eldoc\\*"
+  				(display-buffer-no-window))))
 #+end_src
 * Bookmarks
 #+begin_src emacs-lisp
@@ -206,7 +207,6 @@
     ;; tide + docs
     (evil-define-key 'normal typescript-mode-map (kbd "C-x C-k") 'eldoc-print-current-symbol-info)
     (evil-define-key 'normal typescript-mode-map (kbd "K") 'tide-documentation-at-point)
-    (evil-define-key 'normal tide-mode-map "gd" 'evil-jump-to-tag)
 
     :config
     (evil-set-initial-state 'shell-mode 'motion)
@@ -312,11 +312,13 @@
 * Tide
 #+begin_src emacs-lisp
   (use-package tide
+    :after evil
     :init
     (setq eldoc-echo-area-use-multiline-p nil)
+    (evil-define-key 'normal tide-mode-map "gd" 'evil-jump-to-tag)
     :after (typescript-mode company)
     :hook ((typescript-mode . tide-setup)
-	 (tide-mode . (lambda () (eldoc-mode -1)))))
+  	 (tide-mode . (lambda () (eldoc-mode -1)))))
 #+end_src
 * Eldoc
 #+begin_src emacs-lisp
