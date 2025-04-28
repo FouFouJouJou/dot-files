@@ -206,20 +206,3 @@
 
 (require 'magit)
 (add-hook 'magit-mode-hook 'evil-collection-init)
-
-(setq eval-ssh--socket-files '("~/.ssh/mailer" "~/.ssh/github"))
-
-(defun eval-ssh-darwin () 
-  (let* ((format-string "ssh-add %s")
-	     (cmd (format format-string (string-join eval-ssh--socket-files " "))))
-    (shell-command-to-string cmd)))
-
-(defun eval-ssh-gnu ()
-  (let* ((format-string "eval $(ssh-agent -s) && ssh-add %s && echo $SSH_AUTH_SOCK")
-  	 (cmd (format format-string (string-join eval-ssh--socket-files " "))))
-    (progn
-      (shell-command-to-string "rm -r /tmp/ssh-*")
-      (let ((result (shell-command-to-string cmd)))
-  	(when (string-match "/tmp/ssh-.*" result)
-  	  (setenv "SSH_AUTH_SOCK" (match-string 0 result)))))))
-(if is-macos (eval-ssh-darwin) (eval-ssh-gnu))
