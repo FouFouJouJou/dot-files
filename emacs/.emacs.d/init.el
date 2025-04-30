@@ -53,7 +53,12 @@
   			    (window-parameters . ((mode-line-format . none)))
   			    (body-function . select-window))
 			   ("\\*eldoc\\*"
-			    (display-buffer-no-window))))
+			    (display-buffer-no-window))
+			   ("\\*HTTP Headers\\*"
+			    (display-buffer-reuse-mode-window)
+			    (dedicated . t)
+  			    (window-height . fit-window-to-buffer)
+			    (body-function . select-window))))
 
 (setq bookmark-save-flag 1)
 
@@ -111,38 +116,36 @@
 
 (package-install-selected-packages t)
 
-(require 'almost-mono-themes)
 (load-theme 'almost-mono-white t)
 
 (setq evil-want-keybinding nil)
-(require 'evil)
-(require 'key-chord)
 (setq evil-insert-state-cursor '(box)
       evil-normal-state-cursor '(box)
       evil-want-integration t
       evil-want-minibuffer t)
 
-(evil-define-key 'normal dired-mode-map "h" 'dired-up-directory)
-(evil-define-key 'normal dired-mode-map "l" 'dired-find-alternate-file)
-(evil-define-key 'normal dired-mode-map "q" 'kill-current-buffer)
-(evil-define-key 'normal dired-mode-map "(" 'dired-hide-details-mode)
-(evil-define-key 'normal dired-mode-map "u" 'dired-unmark)
-(evil-define-key 'normal dired-mode-map "gg" 'revert-buffer)
-(evil-define-key 'normal dired-mode-map "f" 'dired-create-empty-file)
-(evil-define-key 'visual dired-mode-map "u" 'dired-unmark)
-(evil-define-key 'visual dired-mode-map "s" 'dired-do-relsymlink)
+(require 'evil)
+(require 'key-chord)
+(evil-define-key 'normal dired-mode-map "h" #'dired-up-directory)
+(evil-define-key 'normal dired-mode-map "l" #'dired-find-alternate-file)
+(evil-define-key 'normal dired-mode-map "q" #'kill-current-buffer)
+(evil-define-key 'normal dired-mode-map "(" #'dired-hide-details-mode)
+(evil-define-key 'normal dired-mode-map "u" #'dired-unmark)
+(evil-define-key 'normal dired-mode-map "gg" #'revert-buffer)
+(evil-define-key 'normal dired-mode-map "f" #'dired-create-empty-file)
+(evil-define-key 'visual dired-mode-map "u" #'dired-unmark)
+(evil-define-key 'visual dired-mode-map "s" #'dired-do-relsymlink)
 
-(evil-define-key 'normal org-mode-map (kbd "M-k") 'org-metaup)
-(evil-define-key 'normal org-mode-map (kbd "M-l") 'org-metaright)
-(evil-define-key 'normal org-mode-map (kbd "M-j") 'org-metadown)
-(evil-define-key 'normal org-mode-map (kbd "M-h") 'org-metaleft)
+(evil-define-key 'normal org-mode-map (kbd "M-k") #'org-metaup)
+(evil-define-key 'normal org-mode-map (kbd "M-l") #'org-metaright)
+(evil-define-key 'normal org-mode-map (kbd "M-j") #'org-metadown)
+(evil-define-key 'normal org-mode-map (kbd "M-h") #'org-metaleft)
 
-(evil-define-key 'normal typescript-mode-map (kbd "C-x C-k") 'eldoc-print-current-symbol-info)
-(evil-define-key 'normal typescript-mode-map (kbd "K") 'tide-documentation-at-point)
-(evil-define-key 'normal tide-mode-map "gd" 'evil-jump-to-tag)
+(evil-define-key 'normal typescript-mode-map (kbd "C-x C-k") #'eldoc-print-current-symbol-info)
+(evil-define-key 'normal typescript-mode-map (kbd "K") #'tide-documentation-at-point)
 
 (setq key-chord-two-keys-default 0.1)
-(key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
+(key-chord-define evil-insert-state-map "jk" #'evil-normal-state)
 (evil-set-initial-state 'shell-mode 'normal)
 (evil-set-initial-state 'verb-response-body-mode 'motion)
 (evil-set-initial-state 'verb-response-headers-mode 'motion)
@@ -152,8 +155,8 @@
 
 (require 'evil-collection)
 (setq evil-collection-setup-minibuffer t)
-(add-hook 'dired-mode-hook 'evil-collection-init)
-(add-hook 'compilation-mode-hook 'evil-collection-init)
+(add-hook 'dired-mode-hook #'evil-collection-init)
+(add-hook 'compilation-mode-hook #'evil-collection-init)
 (evil-collection-init t)
 
 (require 'ido)
@@ -183,9 +186,9 @@
 (smex-initialize)
 (global-set-key (kbd "M-x") 'smex)
 
-(require 'org)
 (setq org-confirm-babel-evaluate nil)
 (setq org-hide-leading-stars t)
+(add-hook 'org-mode-hook #'evil-collection-init)
 (custom-set-faces
   '(org-level-1 ((t (:inherit outline-1 :height 1.4))))
   '(org-level-2 ((t (:inherit outline-2 :height 1.4))))
@@ -195,14 +198,24 @@
   '(org-level-6 ((t (:inherit outline-5 :height 1.1))))
   '(org-level-7 ((t (:inherit outline-5 :height 1.0)))))
 
-(require 'typescript-mode)
 (setq typescript-indent-level 4)
 (setq typescript-auto-indent-flag t)
 (add-to-list 'auto-mode-alist '("\\.ts" . typescript-mode))
+(add-hook 'typescript-mode-hook #'tide-setup)
+(add-hook 'tide-mode-hook (lambda () (evil-define-key 'normal tide-mode-map "gd" #'evil-jump-to-tag)) 100)
+
 
 (global-eldoc-mode -1)
-(setq eldoc-display-functions (list 'eldoc-display-in-echo-area))
+(setq eldoc-display-functions (list #'eldoc-display-in-echo-area))
 
+(add-hook 'magit-mode-hook #'evil-collection-init)
 
-(require 'magit)
-(add-hook 'magit-mode-hook 'evil-collection-init)
+(require 'verb)
+(setq verb-enabled-log 'nil
+      verb-auto-kill-response-buffers t)
+(define-key verb-mode-map (kbd "C-c C-c") #'verb-send-request-on-point)
+(define-key verb-mode-map (kbd "C-c C-<return>") #'verb-send-request-on-point-no-window)
+(define-key verb-mode-map (kbd "C-c C-k") #'verb-kill-all-response-buffers)
+(define-key verb-response-body-mode-map (kbd "C-c C-k") #'verb-kill-all-response-buffers)
+(define-key verb-response-body-mode-map (kbd "C-c C-h") #'verb-toggle-show-headers)
+(define-key verb-response-headers-mode-map (kbd "C-c C-k") #'verb-kill-all-response-buffers)
