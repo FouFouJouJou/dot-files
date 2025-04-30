@@ -143,6 +143,7 @@
 
 (evil-define-key 'normal typescript-mode-map (kbd "C-x C-k") #'eldoc-print-current-symbol-info)
 (evil-define-key 'normal typescript-mode-map (kbd "K") #'tide-documentation-at-point)
+(evil-define-key nil evil-insert-state-map (kbd "C-r") #'comint-history-isearch-backward-regexp)
 
 (setq key-chord-two-keys-default 0.1)
 (key-chord-define evil-insert-state-map "jk" #'evil-normal-state)
