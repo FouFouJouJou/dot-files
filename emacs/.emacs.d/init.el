@@ -63,7 +63,6 @@
 
 (setq bookmark-save-flag 1)
 
-(add-hook 'compilation-mode 'evil-collection-init)
 (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
 
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
@@ -96,14 +95,14 @@
 
 (load-theme 'almost-mono-white t)
 
-(setq evil-want-keybinding nil
-      evil-insert-state-cursor '(box)
-      evil-normal-state-cursor '(box)
-      evil-want-integration t
-      evil-want-minibuffer t)
+(setq evil-want-keybinding nil)
 
 (require 'evil)
 (require 'verb)
+(require 'evil-collection)
+(setq evil-insert-state-cursor '(box)
+      evil-normal-state-cursor '(box)
+      evil-want-minibuffer t)
 (evil-define-key 'normal dired-mode-map "h" #'dired-up-directory)
 (evil-define-key 'normal dired-mode-map "l" #'dired-find-alternate-file)
 (evil-define-key 'normal dired-mode-map "q" #'kill-current-buffer)
@@ -131,9 +130,7 @@
 (key-chord-mode 1)
 
 (setq evil-collection-setup-minibuffer t)
-(add-hook 'dired-mode-hook #'evil-collection-init)
-(add-hook 'compilation-mode-hook #'evil-collection-init)
-(evil-collection-init t)
+(evil-collection-init)
 
 (setq ido-enable-flex-matching t)
 (put 'dired-find-alternate-file 'disabled nil)
@@ -165,7 +162,7 @@
 
 (setq org-confirm-babel-evaluate nil)
 (setq org-hide-leading-stars t)
-(add-hook 'org-mode-hook #'evil-collection-init)
+;(add-hook 'org-mode-hook #'evil-collection-init)
 (custom-set-faces
   '(org-level-1 ((t (:inherit outline-1 :height 1.4))))
   '(org-level-2 ((t (:inherit outline-2 :height 1.4))))
@@ -185,7 +182,7 @@
 (global-eldoc-mode -1)
 (setq eldoc-display-functions (list #'eldoc-display-in-echo-area))
 
-(add-hook 'magit-mode-hook #'evil-collection-init)
+;; (add-hook 'magit-mode-hook #'evil-collection-init)
 
 (setq verb-enabled-log 'nil
       verb-auto-kill-response-buffers t)
@@ -195,3 +192,4 @@
 (define-key verb-response-body-mode-map (kbd "C-c C-k") #'verb-kill-all-response-buffers)
 (define-key verb-response-body-mode-map (kbd "C-c C-h") #'verb-toggle-show-headers)
 (define-key verb-response-headers-mode-map (kbd "C-c C-k") #'verb-kill-all-response-buffers)
+(profiler-stop)
