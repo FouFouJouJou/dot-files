@@ -97,12 +97,10 @@
 
 (setq evil-want-keybinding nil)
 
-(require 'evil)
-(require 'verb)
-(require 'evil-collection)
 (setq evil-insert-state-cursor '(box)
       evil-normal-state-cursor '(box)
       evil-want-minibuffer t)
+(require 'evil)
 (evil-define-key 'normal dired-mode-map "h" #'dired-up-directory)
 (evil-define-key 'normal dired-mode-map "l" #'dired-find-alternate-file)
 (evil-define-key 'normal dired-mode-map "q" #'kill-current-buffer)
@@ -111,10 +109,6 @@
 (evil-define-key 'normal dired-mode-map "gg" #'revert-buffer)
 (evil-define-key 'normal dired-mode-map "f" #'dired-create-empty-file)
 (evil-define-key 'visual dired-mode-map "u" #'dired-unmark)
-(evil-define-key 'normal org-mode-map (kbd "M-k") #'org-metaup)
-(evil-define-key 'normal org-mode-map (kbd "M-l") #'org-metaright)
-(evil-define-key 'normal org-mode-map (kbd "M-j") #'org-metadown)
-(evil-define-key 'normal org-mode-map (kbd "M-h") #'org-metaleft)
 (evil-define-key 'normal typescript-mode-map (kbd "C-x C-k") #'eldoc-print-current-symbol-info)
 (evil-define-key 'normal typescript-mode-map (kbd "K") #'tide-documentation-at-point)
 (evil-define-key nil evil-insert-state-map (kbd "C-r") #'comint-history-isearch-backward-regexp)
@@ -123,12 +117,11 @@
 
 (key-chord-define evil-insert-state-map "jk" #'evil-normal-state)
 (evil-set-initial-state 'shell-mode 'normal)
-(evil-set-initial-state 'verb-response-body-mode 'motion)
-(evil-set-initial-state 'verb-response-headers-mode 'motion)
 
 (evil-mode)
 (key-chord-mode 1)
 
+(require 'evil-collection)
 (setq evil-collection-setup-minibuffer t)
 (evil-collection-init)
 
@@ -162,15 +155,14 @@
 
 (setq org-confirm-babel-evaluate nil)
 (setq org-hide-leading-stars t)
-;(add-hook 'org-mode-hook #'evil-collection-init)
-(custom-set-faces
-  '(org-level-1 ((t (:inherit outline-1 :height 1.4))))
-  '(org-level-2 ((t (:inherit outline-2 :height 1.4))))
-  '(org-level-3 ((t (:inherit outline-3 :height 1.4))))
-  '(org-level-4 ((t (:inherit outline-4 :height 1.3))))
-  '(org-level-5 ((t (:inherit outline-5 :height 1.2))))
-  '(org-level-6 ((t (:inherit outline-5 :height 1.1))))
-  '(org-level-7 ((t (:inherit outline-5 :height 1.0)))))
+(evil-define-key 'normal org-mode-map (kbd "M-k") #'org-metaup)
+(evil-define-key 'normal org-mode-map (kbd "M-l") #'org-metaright)
+(evil-define-key 'normal org-mode-map (kbd "M-j") #'org-metadown)
+(evil-define-key 'normal org-mode-map (kbd "M-h") #'org-metaleft)
+
+(org-babel-do-load-languages
+'org-babel-load-languages
+'((verb . t)))
 
 (setq typescript-indent-level 2)
 (setq typescript-auto-indent-flag t)
@@ -182,10 +174,12 @@
 (global-eldoc-mode -1)
 (setq eldoc-display-functions (list #'eldoc-display-in-echo-area))
 
-;; (add-hook 'magit-mode-hook #'evil-collection-init)
 
+(require 'verb)
 (setq verb-enabled-log 'nil
       verb-auto-kill-response-buffers t)
+(evil-set-initial-state 'verb-response-body-mode 'motion)
+(evil-set-initial-state 'verb-response-headers-mode 'motion)
 (define-key verb-mode-map (kbd "C-c C-c") #'verb-send-request-on-point)
 (define-key verb-mode-map (kbd "C-c C-<return>") #'verb-send-request-on-point-no-window)
 (define-key verb-mode-map (kbd "C-c C-k") #'verb-kill-all-response-buffers)
