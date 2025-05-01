@@ -75,7 +75,6 @@
 (setq custom-file "~/.emacs.d/custom.el")
 
 (setf dired-kill-when-opening-new-dired-buffer t)
-(put 'dired-find-alternate-file 'disabled nil)
 
 (setq eval-ssh--socket-files '("~/.ssh/mailer" "~/.ssh/github"))
 
@@ -96,9 +95,9 @@
 
 (setq package-archives '(("elpa" . "https://tromey.com/elpa/")
 		       ("melpa" . "https://melpa.org/packages/")
-		       ("gnu" . "https://elpa.gnu.org/packages/")))
-(setq package-selected-packages '(use-package
-				  almost-mono-themes
+		       ("gnu" . "https://elpa.gnu.org/packages/")
+		       ("gnu-devel" . "https://elpa.gnu.org/devel/")))
+(setq package-selected-packages '(almost-mono-themes
 				  evil
 				  evil-collection
 				  key-chord
@@ -112,7 +111,8 @@
 				  verb
 				  smex
 				  ido-completing-read+
-				  ido-yes-or-no))
+				  ido-yes-or-no
+				  eglot))
 
 (package-install-selected-packages t)
 
@@ -134,7 +134,7 @@
 (evil-define-key 'normal dired-mode-map "gg" #'revert-buffer)
 (evil-define-key 'normal dired-mode-map "f" #'dired-create-empty-file)
 (evil-define-key 'visual dired-mode-map "u" #'dired-unmark)
-(evil-define-key 'visual dired-mode-map "s" #'dired-do-relsymlink)
+;; (evil-define-key 'visual dired-mode-map "s" #'dired-do-relsymlink)
 
 (evil-define-key 'normal org-mode-map (kbd "M-k") #'org-metaup)
 (evil-define-key 'normal org-mode-map (kbd "M-l") #'org-metaright)
@@ -162,6 +162,10 @@
 
 (require 'ido)
 (setq ido-enable-flex-matching t)
+(put 'dired-find-alternate-file 'disabled nil)
+(setq ido-create-new-buffer 'always)
+(setq-default confirm-nonexistent-file-or-buffer nil)
+(setq ido-file-extensions-order '(".c" ".h" ".ts" ".js" ".org" ".el" ".json"))
 (setq ido-max-window-height 1)
 (setq ido-decorations '(
 			"["
@@ -199,7 +203,7 @@
   '(org-level-6 ((t (:inherit outline-5 :height 1.1))))
   '(org-level-7 ((t (:inherit outline-5 :height 1.0)))))
 
-(setq typescript-indent-level 4)
+(setq typescript-indent-level 2)
 (setq typescript-auto-indent-flag t)
 (add-to-list 'auto-mode-alist '("\\.ts" . typescript-mode))
 (add-hook 'typescript-mode-hook #'tide-setup)
