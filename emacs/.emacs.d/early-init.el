@@ -1,4 +1,6 @@
-(profiler-start 'cpu)
+(setq gc-cons-threshold most-positive-fixnum)
+(add-hook 'emacs-startup-hook (lambda () (setq gc-cons-threshold 800000)))
+
 (setq package-enable-at-startup t)
 (setq package-install-upgrade-built-in t)
 

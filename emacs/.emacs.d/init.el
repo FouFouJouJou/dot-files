@@ -1,3 +1,4 @@
+(profiler-start 'cpu)
 (defvar is-macos (string-equal "darwin" system-type))
 
 (if is-macos
@@ -11,7 +12,7 @@
 (menu-bar-mode 0)
 (tool-bar-mode 0)
 (when (not is-macos)
-  (set-frame-font "Iosevka Term 12" nil t))
+  (set-frame-font "Iosvmata 12" nil t))
 (global-font-lock-mode 1)
 (blink-cursor-mode 1)
 (setq ring-bell-function 'ignore)
@@ -76,7 +77,7 @@
 
 (setf dired-kill-when-opening-new-dired-buffer t)
 
-(setq eval-ssh--socket-files '("~/.ssh/mailer" "~/.ssh/github"))
+(setq eval-ssh--socket-files '("~/.ssh/mailer" "~/.ssh/dot-files"))
 
 (defun eval-ssh-darwin ()
   (let* ((format-string "ssh-add %s")
@@ -100,6 +101,7 @@
 (setq evil-insert-state-cursor '(box)
       evil-normal-state-cursor '(box)
       evil-want-minibuffer t)
+
 (require 'evil)
 (evil-define-key 'normal dired-mode-map "h" #'dired-up-directory)
 (evil-define-key 'normal dired-mode-map "l" #'dired-find-alternate-file)
