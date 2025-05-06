@@ -11,6 +11,7 @@
 (scroll-bar-mode 0)
 (menu-bar-mode 0)
 (tool-bar-mode 0)
+(global-whitespace-mode)
 (when (not is-macos)
   (set-frame-font "Iosvmata 12" nil t))
 (global-font-lock-mode 1)
