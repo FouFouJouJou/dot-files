@@ -11,7 +11,6 @@
 (scroll-bar-mode 0)
 (menu-bar-mode 0)
 (tool-bar-mode 0)
-(global-whitespace-mode)
 (when (not is-macos)
   (set-frame-font "Iosvmata 12" nil t))
 (global-font-lock-mode 1)
@@ -20,6 +19,7 @@
 (setq inhibit-startup-screen t)
 (setq whitespace-line-column 250)
 (setq whitespace-style '(face tabs spaces trailing lines space-before-tab indentation empty space-after-tab space-mark tab-mark missing-newline-at-eof))
+(global-whitespace-mode)
 
 (global-set-key (kbd "C-x k") 'kill-buffer-and-window)
 (global-set-key (kbd "C-x C-x") 'kill-buffer)
