@@ -11,14 +11,15 @@
 (scroll-bar-mode 0)
 (menu-bar-mode 0)
 (tool-bar-mode 0)
+(blink-cursor-mode 1)
 (when (not is-macos)
   (set-frame-font "Iosvmata 12" nil t))
 (global-font-lock-mode 1)
-(blink-cursor-mode 1)
 (setq ring-bell-function 'ignore)
 (setq inhibit-startup-screen t)
 (setq whitespace-line-column 250)
 (setq whitespace-style '(face tabs spaces trailing lines space-before-tab indentation empty space-after-tab space-mark tab-mark missing-newline-at-eof))
+(global-whitespace-mode)
 
 (global-set-key (kbd "C-x k") 'kill-buffer-and-window)
 (global-set-key (kbd "C-x C-x") 'kill-buffer)
@@ -60,7 +61,9 @@
 			      (display-buffer-reuse-mode-window)
 			      (dedicated . t)
 			      (window-height . fit-window-to-buffer)
-			      (body-function . select-window))))
+			      (body-function . select-window))
+			     ("\\*ggtags-global\\*"
+			      (display-buffer-no-window))))
 
 (setq bookmark-save-flag 1)
 
@@ -77,7 +80,7 @@
 
 (setf dired-kill-when-opening-new-dired-buffer t)
 
-(setq eval-ssh--socket-files '("~/.ssh/mailer" "~/.ssh/dot-files"))
+(setq eval-ssh--socket-files '("~/.ssh/mailer" "~/.ssh/github"))
 
 (defun eval-ssh-darwin ()
   (let* ((format-string "ssh-add %s")
@@ -92,7 +95,10 @@
       (let ((result (shell-command-to-string cmd)))
       (when (string-match "/tmp/ssh-.*" result)
 	(setenv "SSH_AUTH_SOCK" (match-string 0 result)))))))
-(if is-macos (eval-ssh-darwin) (eval-ssh-gnu))
+
+(defun ssh-init ()
+  (interactive)
+  (if is-macos (eval-ssh-darwin) (eval-ssh-gnu)))
 
 (load-theme 'almost-mono-white t)
 
@@ -164,7 +170,7 @@
 
 (org-babel-do-load-languages
 'org-babel-load-languages
-'((verb . t)))
+'((shell . t)))
 
 (setq typescript-indent-level 2)
 (setq typescript-auto-indent-flag t)
@@ -175,7 +181,6 @@
 
 (global-eldoc-mode -1)
 (setq eldoc-display-functions (list #'eldoc-display-in-echo-area))
-
 
 (require 'verb)
 (setq verb-enabled-log 'nil
@@ -188,4 +193,7 @@
 (define-key verb-response-body-mode-map (kbd "C-c C-k") #'verb-kill-all-response-buffers)
 (define-key verb-response-body-mode-map (kbd "C-c C-h") #'verb-toggle-show-headers)
 (define-key verb-response-headers-mode-map (kbd "C-c C-k") #'verb-kill-all-response-buffers)
+
+(add-hook 'c-mode-hook 'ggtags-mode)
+
 (profiler-stop)

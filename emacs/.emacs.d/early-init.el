@@ -15,6 +15,7 @@
 				  key-chord
 				  org
 				  magit
+				  project
 				  seq
 				  ediff
 				  tide
@@ -24,6 +25,8 @@
 				  verb
 				  smex
 				  ido-completing-read+
-				  ido-yes-or-no))
+				  ido-yes-or-no
+				  ggtags
+				  ))
 (setq package-load-list '(all))
 (package-install-selected-packages t)
