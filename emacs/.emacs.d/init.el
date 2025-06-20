@@ -13,6 +13,7 @@
 (blink-cursor-mode 1)
 (line-number-mode)
 (column-number-mode)
+(visual-line-mode)
 (when (not is-macos)
   (set-frame-font "Iosvmata 12" nil t))
 (global-font-lock-mode 1)
