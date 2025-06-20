@@ -1,4 +1,3 @@
-(profiler-start 'cpu)
 (defvar is-macos (string-equal "darwin" system-type))
 
 (if is-macos
@@ -12,6 +11,8 @@
 (menu-bar-mode 0)
 (tool-bar-mode 0)
 (blink-cursor-mode 1)
+(line-number-mode)
+(column-number-mode)
 (when (not is-macos)
   (set-frame-font "Iosvmata 12" nil t))
 (global-font-lock-mode 1)
