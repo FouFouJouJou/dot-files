@@ -16,10 +16,10 @@ live_config_reload = true
 TERM = "alacritty"
 
 [font]
-size = 16.0
+size = 12.0
 
 ## [font.normal]
-## family = "SF Mono"
-## style = "Regular"
+## family = "SF Pro Display"
+## style = "Medium"
 
 [keyboard]
