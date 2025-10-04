@@ -1,0 +1,25 @@
+[[keyboard.bindings]]
+action = "IncreaseFontSize"
+key = "K"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "DecreaseFontSize"
+key = "J"
+mods = "Control"
+
+[general]
+import = ["~/.config/alacritty/themes/carbonfox.toml"]
+live_config_reload = true
+
+[env]
+TERM = "alacritty"
+
+[font]
+size = 16.0
+
+## [font.normal]
+## family = "SF Mono"
+## style = "Regular"
+
+[keyboard]
