@@ -12,8 +12,8 @@ NOTIF_TAG="battery"
 APP_NAME="battery"
 NOTIF_TITLE=""
 NOTIF_CONTENT=""
-CHARGE=$(cat /sys/class/power_supply/BAT1/capacity)
-STATUS=$(cat /sys/class/power_supply/BAT1/status)
+CHARGE=$(cat /sys/class/power_supply/BAT0/capacity)
+STATUS=$(cat /sys/class/power_supply/BAT0/status)
 
 notify() {
   BATTERY_LEVEL=$1

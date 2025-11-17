@@ -10,6 +10,9 @@ super + Return
 super + b
 	qutebrowser
 
+super + e
+  emacs
+
 super + @space
 	dmenu_run
 
@@ -23,6 +26,7 @@ super + Escape
 # quit/restart bspwm
 super + r
   bspc wm -r
+
 super + q
   bspc quit
 

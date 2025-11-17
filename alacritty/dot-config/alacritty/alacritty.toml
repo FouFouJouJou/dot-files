@@ -9,7 +9,7 @@ key = "J"
 mods = "Control"
 
 [general]
-import = ["~/.config/alacritty/themes/carbonfox.toml"]
+import = ["~/.config/alacritty/themes/alabaster_dark.toml"]
 live_config_reload = true
 
 [env]

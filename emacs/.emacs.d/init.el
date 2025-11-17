@@ -14,6 +14,7 @@
 (line-number-mode)
 (column-number-mode)
 (visual-line-mode)
+(display-battery-mode 1)
 (when (not is-macos)
   (set-frame-font "Iosevka 12" nil t))
 (global-font-lock-mode 1)
