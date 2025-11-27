@@ -87,7 +87,7 @@
 (setf dired-kill-when-opening-new-dired-buffer t)
 (setf dired-dwim-target t)
 
-(setq eval-ssh--socket-files '("~/.ssh/mailer" "~/.ssh/github"))
+(setq eval-ssh--socket-files '("~/.ssh/dotfiles"))
 
 (defun eval-ssh-darwin ()
   (let* ((format-string "ssh-add %s")
