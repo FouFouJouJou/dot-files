@@ -31,6 +31,9 @@
 (global-set-key (kbd "C-x h") 'nil)
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
+(add-to-list 'exec-path "/run/current-system/sw/bin")
+
+
 (setq display-buffer-alist '(("\\*Buffer List\\*"
 			      (display-buffer-reuse-mode-window)
 			      (window-height . fit-window-to-buffer)
@@ -82,6 +85,7 @@
 (setq custom-file "~/.emacs.d/custom.el")
 
 (setf dired-kill-when-opening-new-dired-buffer t)
+(setf dired-dwim-target t)
 
 (setq eval-ssh--socket-files '("~/.ssh/mailer" "~/.ssh/github"))
 
