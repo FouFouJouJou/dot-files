@@ -7,20 +7,20 @@
 	  mac-control-modifier 'control
 	  mac-command-modifier 'meta))
 
+
 (scroll-bar-mode 0)
 (menu-bar-mode 0)
 (tool-bar-mode 0)
 (blink-cursor-mode 1)
 (line-number-mode)
 (column-number-mode)
-(visual-line-mode)
-(display-battery-mode 1)
+(global-visual-line-mode)
 (when (not is-macos)
   (set-frame-font "Iosevka 12" nil t))
 (global-font-lock-mode 1)
 (setq ring-bell-function 'ignore)
 (setq inhibit-startup-screen t)
-(setq whitespace-line-column 250)
+(setq whitespace-line-column 1000)
 (setq whitespace-style '(face tabs spaces trailing lines space-before-tab indentation empty space-after-tab space-mark tab-mark missing-newline-at-eof))
 (global-whitespace-mode)
 
@@ -84,6 +84,7 @@
 
 (setq custom-file "~/.emacs.d/custom.el")
 
+(setq dired-dwim-target t)
 (setf dired-kill-when-opening-new-dired-buffer t)
 (setf dired-dwim-target t)
 
@@ -123,10 +124,15 @@
 (evil-define-key 'normal dired-mode-map "u" #'dired-unmark)
 (evil-define-key 'normal dired-mode-map "gg" #'revert-buffer)
 (evil-define-key 'normal dired-mode-map "f" #'dired-create-empty-file)
-(evil-define-key 'visual dired-mode-map "u" #'dired-unmark)
+(evil-define-key 'normal dired-mode-map "d" #'dired-create-directory)
 (evil-define-key 'normal typescript-mode-map (kbd "C-x C-k") #'eldoc-print-current-symbol-info)
 (evil-define-key 'normal typescript-mode-map (kbd "K") #'tide-documentation-at-point)
-(evil-define-key nil evil-insert-state-map (kbd "C-r") #'comint-history-isearch-backward-regexp)
+
+(evil-define-key 'normal php-mode-map (kbd "C-x C-k") #'phpactor-hover)
+(evil-define-key 'normal php-mode-map (kbd "K") #'phpactor-goto-definition)
+;; (evil-define-key 'normal php-mode-map (kbd "K") #'tide-documentation-at-point)
+(evil-define-key 'insert minibuffer-local-map (kbd "C-r") #'comint-history-isearch-backward-regexp)
+
 
 (setq key-chord-two-keys-default 0.1)
 
@@ -174,6 +180,7 @@
 (evil-define-key 'normal org-mode-map (kbd "M-l") #'org-metaright)
 (evil-define-key 'normal org-mode-map (kbd "M-j") #'org-metadown)
 (evil-define-key 'normal org-mode-map (kbd "M-h") #'org-metaleft)
+;; (setq org-latex-images-centered t)
 
 (org-babel-do-load-languages
 'org-babel-load-languages
@@ -203,4 +210,5 @@
 
 (add-hook 'c-mode-hook 'ggtags-mode)
 
-(profiler-stop)
+;; (add-hook 'php-mode-hook #'php-mode)
+;; (add-hook 'php-mode-hook #'phpactor-mode)

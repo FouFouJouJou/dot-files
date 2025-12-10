@@ -28,6 +28,8 @@
 				  ido-completing-read+
 				  ido-yes-or-no
 				  ggtags
+				  php-mode
+				  phpactor
 				  ))
 (setq package-load-list '(all))
 (package-install-selected-packages t)
